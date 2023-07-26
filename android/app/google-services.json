@@ -1,0 +1,447 @@
+{
+  "project_info": {
+    "project_number": "667327318779",
+    "firebase_url": "https://official-console-default-rtdb.firebaseio.com",
+    "project_id": "official-console",
+    "storage_bucket": "official-console.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:31705880b7c20383907e5e",
+        "android_client_info": {
+          "package_name": "com.dishu.prod.my_new_orange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:64594516ed5bfdad907e5e",
+        "android_client_info": {
+          "package_name": "com.evs.africa_e_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-tvg91prid7jm8i0dej9tl0jtes0lto4e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evs.africa_e_health",
+            "certificate_hash": "4abe67e5b326870f5e2065262354b9e633e37ef4"
+          }
+        },
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:bb595785d95ef2f8907e5e",
+        "android_client_info": {
+          "package_name": "com.evs.cameroon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-621f1pibovraahanv9ncaqlegl92i0q4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evs.cameroon",
+            "certificate_hash": "4abe67e5b326870f5e2065262354b9e633e37ef4"
+          }
+        },
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:1a43197427ae21df907e5e",
+        "android_client_info": {
+          "package_name": "com.evs.pludin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-ga2gf4m88j81t3vs38k66q2dq86cevv1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evs.pludin",
+            "certificate_hash": "4abe67e5b326870f5e2065262354b9e633e37ef4"
+          }
+        },
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:b22c5cbae90bd7c7907e5e",
+        "android_client_info": {
+          "package_name": "com.evs.wakeriderdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-1df0tca6a31k7h367uvhn2sfmka84vas.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evs.wakeriderdriver",
+            "certificate_hash": "4abe67e5b326870f5e2065262354b9e633e37ef4"
+          }
+        },
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:5983a0782b62560e907e5e",
+        "android_client_info": {
+          "package_name": "com.evs.wakeriderider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-ff4h2p04pg2gethsco2vvbadbmq2i1k2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evs.wakeriderider",
+            "certificate_hash": "4abe67e5b326870f5e2065262354b9e633e37ef4"
+          }
+        },
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:ccdbe5ddd68565b2907e5e",
+        "android_client_info": {
+          "package_name": "com.example.cameroon_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:f36d07ece9c14d84907e5e",
+        "android_client_info": {
+          "package_name": "com.example.journey_recorded"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:db75339dcc1ec5a0907e5e",
+        "android_client_info": {
+          "package_name": "com.example.new_shawl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:1c36f12ffab19472907e5e",
+        "android_client_info": {
+          "package_name": "com.example.pludin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667327318779:android:08e38a0bf01f1e10907e5e",
+        "android_client_info": {
+          "package_name": "com.example.shawl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrm-dy2Q67VGToBzDb9_CRu6jeDGtcoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667327318779-g7bv6ka26upb27keu01sivns6ft1ecf4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667327318779-bf3dsjrpgl81akbc8m0otugd92v9s7kq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evs.new.kidsworld"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
