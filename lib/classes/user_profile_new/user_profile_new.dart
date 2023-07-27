@@ -415,7 +415,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
     //
     //
     //if (fetchedAllData['friendStatus'].toString() == '2') {
-    if (fetchedAllData['Profile_setting'].toString() == '2') {
+    /*if (fetchedAllData['Profile_setting'].toString() == '2') {
       // friends
       if (fetchedAllData['friendStatus'].toString() == '2') {
         // yes they both are friends
@@ -457,17 +457,255 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
     } else {
       // to all
       //
-      /*if (fetchedAllData['userId'].toString() == strLoginUserId.toString()) {
-        //
-        // it's me so don't clear the array data.
-      } else {
-        //
-        //
-        arrHomePosts.clear();
-      }*/
-    }
-    // }
+     
+   }*/
 
+    // image or video profile everyone or friends wale condition m show hoga
+
+    if (fetchedAllData['userId'].toString() == strLoginUserId.toString()) {
+      if (kDebugMode) {
+        print('=============================');
+        print('=====> i am login user <=====');
+        print('==============================');
+      }
+      //
+      //
+      strHideShowThreeButtons = '0';
+    } else {
+      if (fetchedAllData['Profile_setting'].toString() == '1') {
+        // profile is everyone
+        if (fetchedAllData['PostPrivacy_setting'].toString() == '2') {
+          //
+          // check he is my friend or not
+          if (fetchedAllData['friendStatus'].toString() == '2') {
+            //
+            // yes he is my friend
+            /*arrHomePosts.clear();
+          //
+          showLoadingUI(context, 'please wait...');
+          //
+          setState(() {
+            strUserHitType = '1';
+          });
+          funcLoadAllImages('Image');
+          //
+          setState(() {
+            strSelectStatus = '1';
+            if (strClickImages == '0') {
+              strClickImages = '1';
+              strClickFeed = '0';
+              strClickVideos = '0';
+            } else {
+              // strClickImages = '0';
+              strClickFeed = '0';
+              strClickVideos = '0';
+            }
+          });*/
+            //
+          } else {
+            //
+            arrHomePosts.clear();
+            //
+            showLoadingUI(context, 'please wait...');
+            //
+            setState(() {
+              strUserHitType = '1';
+            });
+            funcLoadAllImages('Image');
+            //
+            setState(() {
+              strSelectStatus = '1';
+              if (strClickImages == '0') {
+                strClickImages = '1';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              } else {
+                // strClickImages = '0';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              }
+            });
+            //
+          }
+        } else if (fetchedAllData['PostPrivacy_setting'].toString() == '3') {
+          // Text('post only to me')
+          if (fetchedAllData['userId'].toString() ==
+              strLoginUserId.toString()) {
+            //
+
+            //
+          } else {
+            //
+            arrHomePosts.clear();
+            //
+            showLoadingUI(context, 'please wait...');
+            //
+            setState(() {
+              strUserHitType = '1';
+            });
+            funcLoadAllImages('Image');
+            //
+            setState(() {
+              strSelectStatus = '1';
+              if (strClickImages == '0') {
+                strClickImages = '1';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              } else {
+                // strClickImages = '0';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              }
+            });
+            //
+          }
+        }
+      } else if (fetchedAllData['Profile_setting'].toString() == '2') {
+        // FRIENDS
+        // show only to my friends
+        //
+        if (fetchedAllData['friendStatus'].toString() == '2') {
+          // YES, FRIENDS
+          //
+          //
+          if (fetchedAllData['PostPrivacy_setting'].toString() == '2') {
+            // FRIENDS
+            //
+            // SHOW ALL TABS
+            //
+            //
+
+            //
+          } else if (fetchedAllData['PostPrivacy_setting'].toString() == '3') {
+            if (kDebugMode) {
+              print(
+                  '==================================================================');
+              print(
+                  '======> PROFILE ( FRIEND ) POST ( ONLY ME ) ( YES, FRIENDS )<========');
+              print(
+                  '=================================================================');
+            }
+            //
+            //
+            showLoadingUI(context, 'please wait...');
+            //
+            setState(() {
+              strUserHitType = '1';
+            });
+            funcLoadAllImages('Image');
+            //
+            setState(() {
+              strSelectStatus = '1';
+              if (strClickImages == '0') {
+                strClickImages = '1';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              } else {
+                // strClickImages = '0';
+                strClickFeed = '0';
+                strClickVideos = '0';
+              }
+            });
+            //
+          }
+        } else {
+          if (kDebugMode) {
+            print('no they are not a friend');
+            // profile friends post everyone ( feeds )
+          }
+          //
+          strHideShowThreeButtons = 'show_only_feeds';
+          //
+        }
+        //
+      } else if (fetchedAllData['Profile_setting'].toString() == '3') {
+        if (fetchedAllData['PostPrivacy_setting'].toString() == '1') {
+          if (kDebugMode) {
+            print(
+                '==================================================================');
+            print('======> PROFILE ( ONLY ME ) POST ( ONLY ME ) <========');
+            print('======> SHOW ONLY POST <========');
+            print(
+                '=================================================================');
+          }
+          if (fetchedAllData['friendStatus'].toString() == '2') {
+            if (kDebugMode) {
+              print('======================================');
+              print('======> YES THEY ARE FRIENDS <========');
+            }
+            //
+            //
+            strHideShowThreeButtons = 'show_only_feeds';
+            //
+          } else if (kDebugMode) {
+            print(
+                '==================================================================');
+            print(
+                '======> PROFILE ( ONLY ME ) POST ( ONLY ME ) ( NO FRIENDS) <========');
+            print(
+                '=================================================================');
+          }
+        } else if (fetchedAllData['PostPrivacy_setting'].toString() == '2') {
+          if (kDebugMode) {
+            print(
+                '==================================================================');
+            print('======> PROFILE ( ONLY ME ) POST ( FRIENDS ) <========');
+            print('======> SHOW ONLY POST <========');
+            print(
+                '=================================================================');
+          }
+          if (fetchedAllData['friendStatus'].toString() == '2') {
+            if (kDebugMode) {
+              print('======================================');
+              print('======> YES THEY ARE FRIENDS <========');
+            }
+            //
+            //
+            strHideShowThreeButtons = 'show_only_feeds';
+            //
+          } else {
+            if (kDebugMode) {
+              print(
+                  '==================================================================');
+              print(
+                  '======> PROFILE ( ONLY ME ) POST ( FRIENDS ) ( NO FRIENDS) <========');
+              print(
+                  '=================================================================');
+            }
+          }
+        } else {
+          if (kDebugMode) {
+            print('============== ==============================');
+            print('======> PROFILE ( ONLY ME ) POST ( ONLY ME ) <========');
+            print('======>  HIDE EVERYTHING <========');
+            print('============== ===========================');
+          }
+          //
+          //
+          strHideShowThreeButtons = '1';
+          //
+        }
+
+        /*
+      if (kDebugMode) {
+        print(
+            '==================================================================');
+        print('======> PROFILE ( ONLY ME ) POST ( EVERYONE ) <========');
+        print('======> SHOW ONLY POST <========');
+        print(
+            '=================================================================');
+      }*/
+        //
+        //
+      }
+    }
+
+    //
+    // profile everyon
+    // post friends
+
+    // 3 == 3
+    //
     //
     //
     if (mounted == true) {
@@ -554,1094 +792,421 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                 return true;
               },
               child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.grey,
-                        child: Stack(
-                          children: [
-                            //
-                            if (fetchedAllData['ProfilePicture_setting']
-                                    .toString() ==
-                                '1') ...[
-                              if (fetchedAllData['image'].toString() == '')
-                                //
-                                avatarProfileBGUI()
-                              //
-                              else
-                                //
-                                realProfileBGUI()
-                              //
-                            ] else if (fetchedAllData['ProfilePicture_setting']
-                                    .toString() ==
-                                '2') ...[
-                              // status 2 => we are friends
-                              //
-
-                              if (fetchedAllData['friendStatus'].toString() ==
-                                  '0') ...[
-                                //
-                                avatarProfileBGUI()
-                                // Text('27'),
-                                //
-                              ] else ...[
-                                // yes he / she is friend
-                                if (fetchedAllData['image'].toString() == '')
-                                  //
-                                  avatarProfileBGUI()
-                                // Text('28')
-                                else
-                                  //
-                                  realProfileBGUI()
-                                // Text('29'),
-                                //
-                              ]
-
-                              //
-                            ] else if (fetchedAllData['ProfilePicture_setting']
-                                    .toString() ==
-                                '3') ...[
-                              // my DP is not visible to any one
-                              //
-                              if (fetchedAllData['image'].toString() == '')
-                                //
-                                avatarProfileBGUI()
-                              //
-                              else
-                              //
-                              if (fetchedAllData['userId'].toString() ==
-                                  strLoginUserId.toString()) ...[
-                                realProfileBGUI()
-                                // Text('1')
-                              ] else ...[
-                                avatarProfileBGUI()
-                                // Text('2')
-                              ]
-
-                              //
-                            ],
-
-                            //
-                            bottomProfileImageAndNameWithTagUI(),
-                            //
-                          ],
-                        ),
-                      ),
-                      //
-                      //
-                      showPostFriendsUI(context),
-                      //
-                      // three button show
-                      if (strHideShowThreeButtons == '0') ...[
-                        //
-                        //
-                        threeButtonsSelectForProfile2(context),
-                        //
-                      ] else if (strHideShowThreeButtons == '0') ...[
-                        //
-                        // hide three button UI
-                      ],
-
-                      ///
-                      ///
-
-                      if (strHideShowThreeButtons == '1') ...[
-                        const SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Center(
-                            child: Icon(
-                              Icons.lock,
-                            ),
-                          ),
-                        )
-                      ] else ...[
-                        if (fetchedAllData['PostPrivacy_setting'].toString() ==
-                            '1') ...[
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.grey,
+                      child: Stack(
+                        children: [
                           //
-                          if (strClickFeed == '1') ...[
-                            for (int i = 0; i < arrHomePosts.length; i++) ...[
-                              if (arrHomePosts[i]['postType'].toString() ==
-                                  'Text') ...[
-                                //
-                                // check is this text is shared or not
-                                if (arrHomePosts[i]['share'] == null) ...[
-                                  simpleTextFeedUI(context, i),
-                                ] else ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared some text'),
-                                  //
-                                  //
-                                  HomeNewSharedTextScreen(
-                                    getDataToShareTextWithIndex:
-                                        arrHomePosts[i],
-                                  ),
-                                  //
-                                  likeCommentShareUI(context, i),
-                                  //
-                                ]
-                              ] else if (arrHomePosts[i]['postType']
-                                      .toString() ==
-                                  'Map') ...[
-                                //
-                                // check is this text is shared or not
-                                if (arrHomePosts[i]['share'] == null) ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared location'),
-                                  //
-                                  // show map on feeds
-                                  HomeNewMapScreen(getData: arrHomePosts[i]),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ] else ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared location'),
-                                  //
-                                  //
-                                  //
-                                  //
-                                  if (arrHomePosts[i]['message']
-                                          .split(',')[2] ==
-                                      '')
-                                    ...[]
-                                  else ...[
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: ReadMoreText(
-                                          //
-                                          arrHomePosts[i]['message']
-                                              .split(',')[2],
-                                          //
-                                          style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            // fontWeight: FontWeight.bold,
-                                          ),
-                                          //
-                                          trimLines: 3,
-                                          colorClickableText: Colors.black,
-                                          lessStyle: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: '...Show more',
-                                          trimExpandedText: '...Show less',
-                                          moreStyle: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-
-                                  HomeNewSharedMapUIScreen(
-                                    getDataSharedMapUIWithIndex:
-                                        arrHomePosts[i],
-                                  ),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ]
-                              ] else if (arrHomePosts[i]['postType']
-                                      .toString() ==
-                                  'Image') ...[
-                                //
-                                // check is this text is shared or not
-                                if (arrHomePosts[i]['share'] == null) ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared some image'),
-                                  //
-                                  // show images on feeds
-                                  HomeNewImageScreen(
-                                      getDataForImageWithIndex:
-                                          arrHomePosts[i]),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ] else ...[
-                                  //
-                                  //
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared some image'),
-                                  //
-                                  //
-                                  messageWhenUserShareUI(i),
-                                  //
-                                  HomeNewShareImageScreen(
-                                    getDataSharedImageDataWithIndex:
-                                        arrHomePosts[i],
-                                  ),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ]
-                              ] else if (arrHomePosts[i]['postType']
-                                      .toString() ==
-                                  'Video') ...[
-                                //
-                                // check is this text is shared or not
-                                if (arrHomePosts[i]['share'] == null) ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared some video'),
-                                  //
-                                  // show video on feeds
-                                  HomeNewVideoUIScreen(
-                                    getDataFroVideoUIWithIndex: arrHomePosts[i],
-                                  ),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ] else ...[
-                                  //
-                                  // header = > image , name , time
-                                  commonHeaderForAllCellTypesUI(
-                                      context, i, ' shared some video'),
-
-                                  //
-                                  messageWhenUserShareUI(i),
-                                  //
-                                  //
-                                  HomeNewSharedVideoScreen(
-                                    getDataForVideoWithIndex: arrHomePosts[i],
-                                  ),
-                                  //
-                                  // like , comment and share
-                                  likeCommentShareUI(context, i),
-                                ]
-                              ],
-                              Container(
-                                height: 0.6,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.grey,
-                              ),
-                            ]
-                          ] else if (strClickImages == '1') ...[
+                          if (fetchedAllData['ProfilePicture_setting']
+                                  .toString() ==
+                              '1') ...[
+                            if (fetchedAllData['image'].toString() == '')
+                              //
+                              avatarProfileBGUI()
                             //
+                            else
+                              //
+                              realProfileBGUI()
                             //
-                            // showLoadingUI
-                            // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-
-                            GridView.builder(
-                              padding: const EdgeInsets.all(6),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                // maxCrossAxisExtent: 300,
-                                childAspectRatio: 6 / 6,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15, crossAxisCount: 3,
-                              ),
-                              itemCount: arrImageList.length,
-                              itemBuilder: (BuildContext ctx, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    CustomImageProvider customImageProvider =
-                                        CustomImageProvider(
-                                            //
-                                            imageUrls:
-                                                arr_scroll_multiple_images
-                                                    .toList(),
-
-                                            //
-                                            initialIndex: index);
-                                    showImageViewerPager(
-                                        context, customImageProvider,
-                                        doubleTapZoomable: true,
-                                        onPageChanged: (page) {
-                                      // print("Page changed to $page");
-                                    }, onViewerDismissed: (page) {
-                                      // print("Dismissed while on page $page");
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        // left: 10.0,
-                                        // right: 10,
-                                        ),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                        240,
-                                        240,
-                                        240,
-                                        1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                        15,
-                                      ),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            //
-                                            arrImageList[index]['image']
-                                                .toString()
-                                            //
-                                            ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    // child:
-                                  ),
-                                );
-                              },
-                            )
-
-                            //
-                          ] else if (strClickVideos == '1') ...[
-                            //
-                            // funcLoadAllImages('Video'),
-                            // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-                            //
-                            GridView.builder(
-                              padding: const EdgeInsets.all(6),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                // maxCrossAxisExtent: 300,
-                                childAspectRatio: 6 / 6,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15, crossAxisCount: 3,
-                              ),
-                              itemCount: arrImageList.length,
-                              itemBuilder: (BuildContext ctx, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            HomeNewPlayVideoScreen(
-                                          getURL: arrImageList[index]['image']
-                                              .toString(),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        // left: 10.0,
-                                        // right: 10,
-                                        ),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                        240,
-                                        240,
-                                        240,
-                                        1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                        15,
-                                      ),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            //
-                                            arrImageList[index]['image']
-                                                .toString()
-                                            //
-                                            ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    child: const Icon(
-                                      Icons.play_arrow,
-                                    ),
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-
-                          //
-                        ] else if (fetchedAllData['PostPrivacy_setting']
-                                .toString() ==
-                            '2') ...[
-                          //
-                          // check he is my friend or not
-                          if (fetchedAllData['friendStatus'].toString() ==
+                          ] else if (fetchedAllData['ProfilePicture_setting']
+                                  .toString() ==
                               '2') ...[
+                            // status 2 => we are friends
                             //
-                            // yes he is my friend
-                            if (strClickFeed == '1') ...[
-                              for (int i = 0; i < arrHomePosts.length; i++) ...[
-                                if (arrHomePosts[i]['postType'].toString() ==
-                                    'Text') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    simpleTextFeedUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some text'),
-                                    //
-                                    //
-                                    HomeNewSharedTextScreen(
-                                      getDataToShareTextWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    likeCommentShareUI(context, i),
-                                    //
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Map') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared location'),
-                                    //
-                                    // show map on feeds
-                                    HomeNewMapScreen(getData: arrHomePosts[i]),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared location'),
-                                    //
-                                    //
-                                    //
-                                    //
-                                    if (arrHomePosts[i]['message']
-                                            .split(',')[2] ==
-                                        '')
-                                      ...[]
-                                    else ...[
-                                      Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: ReadMoreText(
-                                            //
-                                            arrHomePosts[i]['message']
-                                                .split(',')[2],
-                                            //
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              // fontWeight: FontWeight.bold,
-                                            ),
-                                            //
-                                            trimLines: 3,
-                                            colorClickableText: Colors.black,
-                                            lessStyle: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            trimMode: TrimMode.Line,
-                                            trimCollapsedText: '...Show more',
-                                            trimExpandedText: '...Show less',
-                                            moreStyle: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
 
-                                    HomeNewSharedMapUIScreen(
-                                      getDataSharedMapUIWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Image') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some image'),
-                                    //
-                                    // show images on feeds
-                                    HomeNewImageScreen(
-                                        getDataForImageWithIndex:
-                                            arrHomePosts[i]),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    //
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some image'),
-                                    //
-                                    //
-                                    messageWhenUserShareUI(i),
-                                    //
-                                    HomeNewShareImageScreen(
-                                      getDataSharedImageDataWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Video') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some video'),
-                                    //
-                                    // show video on feeds
-                                    HomeNewVideoUIScreen(
-                                      getDataFroVideoUIWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some video'),
+                            if (fetchedAllData['friendStatus'].toString() ==
+                                '0') ...[
+                              //
+                              avatarProfileBGUI()
+                              // Text('27'),
+                              //
+                            ] else ...[
+                              // yes he / she is friend
+                              if (fetchedAllData['image'].toString() == '')
+                                //
+                                avatarProfileBGUI()
+                              // Text('28')
+                              else
+                                //
+                                realProfileBGUI()
+                              // Text('29'),
+                              //
+                            ]
 
-                                    //
-                                    messageWhenUserShareUI(i),
-                                    //
-                                    //
-                                    HomeNewSharedVideoScreen(
-                                      getDataForVideoWithIndex: arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ],
-                                Container(
-                                  height: 0.6,
-                                  width: MediaQuery.of(context).size.width,
-                                  color: Colors.grey,
-                                ),
-                              ]
-                            ] else if (strClickImages == '1') ...[
-                              //
-                              //
-                              // showLoadingUI
-                              // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-
-                              GridView.builder(
-                                padding: const EdgeInsets.all(6),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  // maxCrossAxisExtent: 300,
-                                  childAspectRatio: 6 / 6,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15, crossAxisCount: 3,
-                                ),
-                                itemCount: arrImageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      CustomImageProvider customImageProvider =
-                                          CustomImageProvider(
-                                              //
-                                              imageUrls:
-                                                  arr_scroll_multiple_images
-                                                      .toList(),
-
-                                              //
-                                              initialIndex: index);
-                                      showImageViewerPager(
-                                          context, customImageProvider,
-                                          doubleTapZoomable: true,
-                                          onPageChanged: (page) {
-                                        // print("Page changed to $page");
-                                      }, onViewerDismissed: (page) {
-                                        // print("Dismissed while on page $page");
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          // left: 10.0,
-                                          // right: 10,
-                                          ),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                          240,
-                                          240,
-                                          240,
-                                          1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          15,
-                                        ),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              //
-                                              arrImageList[index]['image']
-                                                  .toString()
-                                              //
-                                              ),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      // child:
-                                    ),
-                                  );
-                                },
-                              )
-
-                              //
-                            ] else if (strClickVideos == '1') ...[
-                              //
-                              // funcLoadAllImages('Video'),
-                              // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-                              //
-                              GridView.builder(
-                                padding: const EdgeInsets.all(6),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  // maxCrossAxisExtent: 300,
-                                  childAspectRatio: 6 / 6,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15, crossAxisCount: 3,
-                                ),
-                                itemCount: arrImageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomeNewPlayVideoScreen(
-                                            getURL: arrImageList[index]['image']
-                                                .toString(),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          // left: 10.0,
-                                          // right: 10,
-                                          ),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                          240,
-                                          240,
-                                          240,
-                                          1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          15,
-                                        ),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              //
-                                              arrImageList[index]['image']
-                                                  .toString()
-                                              //
-                                              ),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.play_arrow,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          ] else ...[
-                            // Text('he is not my friend')
-                            // setsta
-                          ]
-                        ] else if (fetchedAllData['PostPrivacy_setting']
-                                .toString() ==
-                            '3') ...[
-                          // Text('post only to me')
-                          if (fetchedAllData['userId'].toString() ==
-                              strLoginUserId.toString()) ...[
                             //
-                            if (strClickFeed == '1') ...[
-                              for (int i = 0; i < arrHomePosts.length; i++) ...[
-                                if (arrHomePosts[i]['postType'].toString() ==
-                                    'Text') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    simpleTextFeedUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some text'),
-                                    //
-                                    //
-                                    HomeNewSharedTextScreen(
-                                      getDataToShareTextWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    likeCommentShareUI(context, i),
-                                    //
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Map') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared location'),
-                                    //
-                                    // show map on feeds
-                                    HomeNewMapScreen(getData: arrHomePosts[i]),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared location'),
-                                    //
-                                    //
-                                    //
-                                    //
-                                    if (arrHomePosts[i]['message']
-                                            .split(',')[2] ==
-                                        '')
-                                      ...[]
-                                    else ...[
-                                      Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: ReadMoreText(
-                                            //
-                                            arrHomePosts[i]['message']
-                                                .split(',')[2],
-                                            //
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              // fontWeight: FontWeight.bold,
-                                            ),
-                                            //
-                                            trimLines: 3,
-                                            colorClickableText: Colors.black,
-                                            lessStyle: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            trimMode: TrimMode.Line,
-                                            trimCollapsedText: '...Show more',
-                                            trimExpandedText: '...Show less',
-                                            moreStyle: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-
-                                    HomeNewSharedMapUIScreen(
-                                      getDataSharedMapUIWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Image') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some image'),
-                                    //
-                                    // show images on feeds
-                                    HomeNewImageScreen(
-                                        getDataForImageWithIndex:
-                                            arrHomePosts[i]),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    //
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some image'),
-                                    //
-                                    //
-                                    messageWhenUserShareUI(i),
-                                    //
-                                    HomeNewShareImageScreen(
-                                      getDataSharedImageDataWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ] else if (arrHomePosts[i]['postType']
-                                        .toString() ==
-                                    'Video') ...[
-                                  //
-                                  // check is this text is shared or not
-                                  if (arrHomePosts[i]['share'] == null) ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some video'),
-                                    //
-                                    // show video on feeds
-                                    HomeNewVideoUIScreen(
-                                      getDataFroVideoUIWithIndex:
-                                          arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ] else ...[
-                                    //
-                                    // header = > image , name , time
-                                    commonHeaderForAllCellTypesUI(
-                                        context, i, ' shared some video'),
-
-                                    //
-                                    messageWhenUserShareUI(i),
-                                    //
-                                    //
-                                    HomeNewSharedVideoScreen(
-                                      getDataForVideoWithIndex: arrHomePosts[i],
-                                    ),
-                                    //
-                                    // like , comment and share
-                                    likeCommentShareUI(context, i),
-                                  ]
-                                ],
-                                Container(
-                                  height: 0.6,
-                                  width: MediaQuery.of(context).size.width,
-                                  color: Colors.grey,
-                                ),
-                              ]
-                            ] else if (strClickImages == '1') ...[
-                              //
-                              //
-                              // showLoadingUI
-                              // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-
-                              GridView.builder(
-                                padding: const EdgeInsets.all(6),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  // maxCrossAxisExtent: 300,
-                                  childAspectRatio: 6 / 6,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15, crossAxisCount: 3,
-                                ),
-                                itemCount: arrImageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      CustomImageProvider customImageProvider =
-                                          CustomImageProvider(
-                                              //
-                                              imageUrls:
-                                                  arr_scroll_multiple_images
-                                                      .toList(),
-
-                                              //
-                                              initialIndex: index);
-                                      showImageViewerPager(
-                                          context, customImageProvider,
-                                          doubleTapZoomable: true,
-                                          onPageChanged: (page) {
-                                        // print("Page changed to $page");
-                                      }, onViewerDismissed: (page) {
-                                        // print("Dismissed while on page $page");
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          // left: 10.0,
-                                          // right: 10,
-                                          ),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                          240,
-                                          240,
-                                          240,
-                                          1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          15,
-                                        ),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              //
-                                              arrImageList[index]['image']
-                                                  .toString()
-                                              //
-                                              ),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      // child:
-                                    ),
-                                  );
-                                },
-                              )
-
-                              //
-                            ] else if (strClickVideos == '1') ...[
-                              //
-                              // funcLoadAllImages('Video'),
-                              // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
-                              //
-                              GridView.builder(
-                                padding: const EdgeInsets.all(6),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  // maxCrossAxisExtent: 300,
-                                  childAspectRatio: 6 / 6,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15, crossAxisCount: 3,
-                                ),
-                                itemCount: arrImageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomeNewPlayVideoScreen(
-                                            getURL: arrImageList[index]['image']
-                                                .toString(),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          // left: 10.0,
-                                          // right: 10,
-                                          ),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                          240,
-                                          240,
-                                          240,
-                                          1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          15,
-                                        ),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              //
-                                              arrImageList[index]['image']
-                                                  .toString()
-                                              //
-                                              ),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.play_arrow,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
+                          ] else if (fetchedAllData['ProfilePicture_setting']
+                                  .toString() ==
+                              '3') ...[
+                            // my DP is not visible to any one
                             //
-                          ] else ...[
-                            const SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: Center(
-                                child: Icon(
-                                  Icons.lock,
+                            if (fetchedAllData['image'].toString() == '')
+                              //
+                              avatarProfileBGUI()
+                            //
+                            else
+                            //
+                            if (fetchedAllData['userId'].toString() ==
+                                strLoginUserId.toString()) ...[
+                              realProfileBGUI()
+                              // Text('1')
+                            ] else ...[
+                              avatarProfileBGUI()
+                              // Text('2')
+                            ]
+
+                            //
+                          ],
+
+                          //
+                          bottomProfileImageAndNameWithTagUI(),
+                          //
+                        ],
+                      ),
+                    ),
+                    //
+                    //
+                    showPostFriendsUI(context),
+                    //
+
+                    // three button show
+                    if (strHideShowThreeButtons == '0') ...[
+                      //
+                      //
+                      threeButtonsSelectForProfile2(context),
+                      //
+                    ] /* else if (strHideShowThreeButtons == '0') ...[
+                      //
+                      // hide three button UI
+                    ] */
+                    else if (strHideShowThreeButtons == 'show_only_feeds') ...[
+                      //
+                      // show only feeds tab
+                      showOnlyPostTabFromThreeUI(context),
+                    ],
+
+                    ///
+                    ///
+
+                    if (strHideShowThreeButtons == '1') ...[
+                      const SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Center(
+                          child: Icon(
+                            Icons.lock,
+                          ),
+                        ),
+                      )
+                    ] else ...[
+                      if (strClickFeed == '1') ...[
+                        for (int i = 0; i < arrHomePosts.length; i++) ...[
+                          if (arrHomePosts[i]['postType'].toString() ==
+                              'Text') ...[
+                            //
+                            // check is this text is shared or not
+                            if (arrHomePosts[i]['share'] == null) ...[
+                              simpleTextFeedUI(context, i),
+                            ] else ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared some text'),
+                              //
+                              //
+                              HomeNewSharedTextScreen(
+                                getDataToShareTextWithIndex: arrHomePosts[i],
+                              ),
+                              //
+                              likeCommentShareUI(context, i),
+                              //
+                            ]
+                          ] else if (arrHomePosts[i]['postType'].toString() ==
+                              'Map') ...[
+                            //
+                            // check is this text is shared or not
+                            if (arrHomePosts[i]['share'] == null) ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared location'),
+                              //
+                              // show map on feeds
+                              HomeNewMapScreen(getData: arrHomePosts[i]),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ] else ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared location'),
+                              //
+                              //
+                              //
+                              //
+                              if (arrHomePosts[i]['message'].split(',')[2] ==
+                                  '')
+                                ...[]
+                              else ...[
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: ReadMoreText(
+                                      //
+                                      arrHomePosts[i]['message'].split(',')[2],
+                                      //
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      //
+                                      trimLines: 3,
+                                      colorClickableText: Colors.black,
+                                      lessStyle: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: '...Show more',
+                                      trimExpandedText: '...Show less',
+                                      moreStyle: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+
+                              HomeNewSharedMapUIScreen(
+                                getDataSharedMapUIWithIndex: arrHomePosts[i],
+                              ),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ]
+                          ] else if (arrHomePosts[i]['postType'].toString() ==
+                              'Image') ...[
+                            //
+                            // check is this text is shared or not
+                            if (arrHomePosts[i]['share'] == null) ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared some image'),
+                              //
+                              // show images on feeds
+                              HomeNewImageScreen(
+                                  getDataForImageWithIndex: arrHomePosts[i]),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ] else ...[
+                              //
+                              //
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared some image'),
+                              //
+                              //
+                              messageWhenUserShareUI(i),
+                              //
+                              HomeNewShareImageScreen(
+                                getDataSharedImageDataWithIndex:
+                                    arrHomePosts[i],
+                              ),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ]
+                          ] else if (arrHomePosts[i]['postType'].toString() ==
+                              'Video') ...[
+                            //
+                            // check is this text is shared or not
+                            if (arrHomePosts[i]['share'] == null) ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared some video'),
+                              //
+                              // show video on feeds
+                              HomeNewVideoUIScreen(
+                                getDataFroVideoUIWithIndex: arrHomePosts[i],
+                              ),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ] else ...[
+                              //
+                              // header = > image , name , time
+                              commonHeaderForAllCellTypesUI(
+                                  context, i, ' shared some video'),
+
+                              //
+                              messageWhenUserShareUI(i),
+                              //
+                              //
+                              HomeNewSharedVideoScreen(
+                                getDataForVideoWithIndex: arrHomePosts[i],
+                              ),
+                              //
+                              // like , comment and share
+                              likeCommentShareUI(context, i),
+                            ]
+                          ],
+                          Container(
+                            height: 0.6,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.grey,
+                          ),
+                        ]
+                      ] else if (strClickImages == '1') ...[
+                        //
+                        //
+                        // showLoadingUI
+                        // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
+
+                        GridView.builder(
+                          padding: const EdgeInsets.all(6),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            // maxCrossAxisExtent: 300,
+                            childAspectRatio: 6 / 6,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15, crossAxisCount: 3,
+                          ),
+                          itemCount: arrImageList.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                CustomImageProvider customImageProvider =
+                                    CustomImageProvider(
+                                        //
+                                        imageUrls:
+                                            arr_scroll_multiple_images.toList(),
+
+                                        //
+                                        initialIndex: index);
+                                showImageViewerPager(
+                                    context, customImageProvider,
+                                    doubleTapZoomable: true,
+                                    onPageChanged: (page) {
+                                  // print("Page changed to $page");
+                                }, onViewerDismissed: (page) {
+                                  // print("Dismissed while on page $page");
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    // left: 10.0,
+                                    // right: 10,
+                                    ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(
+                                    240,
+                                    240,
+                                    240,
+                                    1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    15,
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        //
+                                        arrImageList[index]['image'].toString()
+                                        //
+                                        ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                // child:
+                              ),
+                            );
+                          },
+                        )
+
+                        //
+                      ] else if (strClickVideos == '1') ...[
+                        //
+                        // funcLoadAllImages('Video'),
+                        // UserNewProfileImagesScreen(getImageFullArray: arrImageList),
+                        //
+                        GridView.builder(
+                          padding: const EdgeInsets.all(6),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            // maxCrossAxisExtent: 300,
+                            childAspectRatio: 6 / 6,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15, crossAxisCount: 3,
+                          ),
+                          itemCount: arrImageList.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeNewPlayVideoScreen(
+                                      getURL: arrImageList[index]['image']
+                                          .toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    // left: 10.0,
+                                    // right: 10,
+                                    ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(
+                                    240,
+                                    240,
+                                    240,
+                                    1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    15,
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        //
+                                        arrImageList[index]['image'].toString()
+                                        //
+                                        ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.play_arrow,
                                 ),
                               ),
-                            )
-                          ]
-                        ],
-                        /**/
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
-                        ///
+                            );
+                          },
+                        )
                       ],
-
-                      //
-
-                      //
                     ],
-                  )),
+
+                    //
+
+                    //
+                  ],
+                ),
+              ),
             ),
     );
   }
@@ -3296,23 +2861,6 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                     ),
                   ),
                 ),
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                // Flexible(
-                //   child: Container(
-                //     height: 40,
-                //     width: MediaQuery.of(context).size.width,
-                //     color: Colors.transparent,
-                //     child: Center(
-                //       child: textWithBoldStyle(
-                //         'report',
-                //         Colors.black,
-                //         18.0,
-                //       ),
-                //     ),
-                //   ),
-                // )
               ],
             ),
           ),
@@ -3353,32 +2901,53 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
   Column threeButtonsSelectForProfile2(BuildContext context) {
     return Column(
       children: [
-        if (fetchedAllData['PostPrivacy_setting'].toString() == '1') ...[
+        if (fetchedAllData['userId'].toString() ==
+            strLoginUserId.toString()) ...[
           //
           showAllTabsUI(context),
           //
-        ] else if (fetchedAllData['PostPrivacy_setting'].toString() == '2') ...[
-          //
-          // check he is my friend or not
-          if (fetchedAllData['friendStatus'].toString() == '2') ...[
+        ] else ...[
+          if (fetchedAllData['PostPrivacy_setting'].toString() == '1') ...[
             //
-            // yes he is my friend
-            showOnlyPostTabFromThreeUI(context),
-          ] else ...[
-            // Text('he is not my friend')
-            // setsta
-          ]
-        ] else if (fetchedAllData['PostPrivacy_setting'].toString() == '3') ...[
-          // Text('post only to me')
-          if (fetchedAllData['userId'].toString() ==
-              strLoginUserId.toString()) ...[
+            showAllTabsUI(context),
             //
-            showOnlyPostTabFromThreeUI(context),
+          ] else if (fetchedAllData['PostPrivacy_setting'].toString() ==
+              '2') ...[
             //
-          ] else ...[
-            // Text('1.1')
-          ]
-        ],
+            // check he is my friend or not
+            if (fetchedAllData['friendStatus'].toString() == '2') ...[
+              //
+              // yes he is my friend
+              showAllTabsUI(context),
+
+              ///
+              ///
+              ///
+              ///
+              ///
+              ///
+              ///
+              ///
+            ] else ...[
+              //
+              //
+              showOnlyImageAndVideo(context),
+              //
+            ]
+          ] else if (fetchedAllData['PostPrivacy_setting'].toString() ==
+              '3') ...[
+            // Text('post only to me')
+            if (fetchedAllData['userId'].toString() ==
+                strLoginUserId.toString()) ...[
+              //
+              showAllTabsUI(context),
+              //
+            ] else ...[
+              //
+              showOnlyImageAndVideo(context),
+            ]
+          ],
+        ]
       ],
     );
   }
@@ -3437,6 +3006,116 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                     ),
             ),
           ),
+          //
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                if (kDebugMode) {
+                  print('click images =====> $strClickImages');
+                }
+                showLoadingUI(context, 'please wait...');
+                //
+                setState(() {
+                  strUserHitType = '1';
+                });
+                funcLoadAllImages('Image');
+                //
+                setState(() {
+                  strSelectStatus = '1';
+                  if (strClickImages == '0') {
+                    strClickImages = '1';
+                    strClickFeed = '0';
+                    strClickVideos = '0';
+                  } else {
+                    // strClickImages = '0';
+                    strClickFeed = '0';
+                    strClickVideos = '0';
+                  }
+                });
+                //
+              },
+              child: (strClickImages == '0')
+                  ? SizedBox(
+                      height: 26,
+                      width: 26,
+                      child: Image.asset(
+                        'assets/icons/profile_image_black.png',
+                      ),
+                    )
+                  : SizedBox(
+                      height: 26,
+                      width: 26,
+                      child: Image.asset(
+                        'assets/icons/profile_image_color.png',
+                      ),
+                    ),
+            ),
+          ),
+          //
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                if (kDebugMode) {
+                  print('click video =====> $strClickVideos');
+                }
+                //
+                //
+                showLoadingUI(context, 'please wait...');
+                setState(() {
+                  strUserHitType = '2';
+                });
+                funcLoadAllImages('Video');
+
+                //
+                setState(() {
+                  if (strClickVideos == '0') {
+                    strClickVideos = '1';
+                    strClickFeed = '0';
+                    strClickImages = '0';
+                  } else {
+                    // strClickVideos = '0';
+                    strClickFeed = '0';
+                    strClickImages = '0';
+                  }
+                });
+                //
+              },
+              child: (strClickVideos == '0')
+                  ? SizedBox(
+                      height: 26,
+                      width: 26,
+                      child: Image.asset(
+                        'assets/icons/profile_video_black.png',
+                      ),
+                    )
+                  : SizedBox(
+                      height: 26,
+                      width: 26,
+                      child: Image.asset(
+                        'assets/icons/profile_video_color.png',
+                      ),
+                    ),
+            ),
+          ),
+          //
+        ],
+      ),
+    );
+  }
+
+  Container showOnlyImageAndVideo(BuildContext context) {
+    return Container(
+      // margin: const EdgeInsets.all(10.0),
+      color: const Color.fromRGBO(
+        231,
+        231,
+        231,
+        1,
+      ),
+      width: MediaQuery.of(context).size.width,
+      height: 60,
+      child: Row(
+        children: [
           //
           Expanded(
             child: InkWell(
