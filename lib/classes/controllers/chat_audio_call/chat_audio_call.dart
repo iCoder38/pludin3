@@ -95,6 +95,9 @@ class _ChatAudioCallScreenState extends State<ChatAudioCallScreen> {
       print('========= UUID =============');
       print(strCallStatus);
       //
+      funcSendNotificationToUsers(
+          'd2jY56J8RDCqm0ZM9ROn4J:APA91bFiJRswCC5_tsrvpnFYm8_ZCuvLtuVkRigRR--IUvnfrUsdOSPP-nWfeo13LCD5DGbzkDxx7ytBtbnqfF4RAke5v5KeeucOmogBrY1QuuTQyVmT8Zo3ScMimsLtl-prF_ejvcF6');
+      //
     }
     //
     if (strCallStatus == 'make_call') {
@@ -880,7 +883,7 @@ class _ChatAudioCallScreenState extends State<ChatAudioCallScreen> {
       print(sendNotificationToUsersToken);
     }
 
-    var serverKey = notificationServerKey;
+    /* var serverKey = notificationServerKey;
     QuerySnapshot ref =
         await FirebaseFirestore.instance.collection('users').get();
 
@@ -899,16 +902,20 @@ class _ChatAudioCallScreenState extends State<ChatAudioCallScreen> {
           'priority': 'high',
 
           'data': <String, dynamic>{
-            'channel_name': strUUIDcreator,
-            'full_data': widget.getAllData,
-            'id': '1',
-            'type': 'audio_call'
+            'name': strUUIDcreator,
+            'channelName': '',
+            'image': '',
+            'message': '',
+            'device': '',
+            'deviceToken': '',
+            'Receiver_device': '',
+            'type': 'audioCall'
           },
           // 'type': 'audio_call',
           // 'data':
           'to': sendNotificationToUsersToken,
         },
       ),
-    );
+    );*/
   }
 }

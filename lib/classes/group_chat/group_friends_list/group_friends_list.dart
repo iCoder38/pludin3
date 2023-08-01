@@ -307,14 +307,29 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
     arrCustomDataAdd.add(custom);
 
     print('=================================================');
-    print('=================================================');
+    print('================= custom ====================');
     print(arrCustomDataAdd);
-    print(arrDummy.removeAt(indexx));
+    // print(arrDummy.removeAt(indexx));
     print('=================================================');
+    print('============== dummy ===================');
+    print(arrDummy[indexx]);
+    print(arrDummy.length);
     print('=================================================');
+    print('============== dummy index number after remove ===================');
+    arrDummy.removeAt(indexx);
+    print(arrDummy.length);
+    setState(() {
+      //
+      // print(arrCustomDataAdd);
+      funcFind(arrCustomDataAdd);
+      //
+    });
+    /*print('=================================================');
+    print('============== index ===================');
+    print(indexx);
     setState(() {});
     //
-    funcFind(arrCustomDataAdd[indexx]);
+    funcFind(arrCustomDataAdd[indexx]);*/
     //
   }
 
@@ -364,6 +379,11 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
   //
   //
   funcUpdate(elementId, data2) {
+    print('==========================');
+    print('UPDATE MEMBER DETAILS');
+    print(elementId);
+    print(data2);
+
     FirebaseFirestore.instance
         .collection("${strFirebaseMode}dialog")
         .doc('India')
@@ -371,9 +391,9 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         .doc(elementId)
         .set(
       {
-        'members_details': FieldValue.arrayUnion([
+        'members_details': FieldValue.arrayUnion(
           data2,
-        ]),
+        ),
       },
       SetOptions(merge: true),
     ).then(
@@ -387,6 +407,12 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
   //
   // also update match
   funcUpdateMatch(elementId3, data3) {
+    print('==========================');
+    print('UPDATE MATCH');
+    print(elementId3);
+    print(data3);
+    print(data3[0]);
+    print(data3[0]['firebase_id'].toString());
     FirebaseFirestore.instance
         .collection("${strFirebaseMode}dialog")
         .doc('India')
@@ -394,9 +420,9 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         .doc(elementId3)
         .set(
       {
-        'match': FieldValue.arrayUnion([
-          data3['firebase_id'],
-        ]),
+        'match': FieldValue.arrayUnion(
+          [data3[0]['firebase_id']],
+        ),
       },
       SetOptions(merge: true),
     ).then(
