@@ -276,11 +276,11 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
                 Colors.black,
                 16.0,
               ),
-              subtitle: textWithRegularStyle(
+              /*subtitle: textWithRegularStyle(
                 '325 friends circle',
                 Colors.blueGrey,
                 14.0,
-              ),
+              ),*/
               trailing: InkWell(
                 onTap: () {
                   //

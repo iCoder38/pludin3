@@ -21,6 +21,7 @@ import 'package:pludin/classes/controllers/home/home_like_modal/home_like_modal.
 // import 'package:pludin/classes/controllers/profile/my_profile_feeds/my_profile_feeds.dart';
 import 'package:pludin/classes/controllers/profile/my_profile_modal/my_profile_modal.dart';
 import 'package:pludin/classes/controllers/profile/profile_gallery/photo_gallery_modal/photo_gallery_modal.dart';
+import 'package:pludin/classes/controllers/search_friends/search_friends.dart';
 // import 'package:pludin/classes/controllers/profile/profile_gallery/profile_gallery.dart';
 // import 'package:pludin/classes/controllers/profile/profile_videos/profile_videos.dart';
 import 'package:pludin/classes/header/utils.dart';
@@ -798,7 +799,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                     Container(
                       height: 300,
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.grey,
+                      color: Colors.white,
                       child: Stack(
                         children: [
                           //
@@ -863,6 +864,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                           ],
 
                           //
+
                           bottomProfileImageAndNameWithTagUI(),
                           //
                         ],
@@ -1419,13 +1421,14 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
 // UI = > REAL PHOTO UI
   Container realProfileBGUI() {
     return Container(
+      height: 320,
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
       child: Opacity(
         opacity: 0.4,
         child: Image.network(
           fetchedAllData['image'].toString(),
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
         ),
       ),
     );
@@ -1433,6 +1436,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
 
   Container profileimageBigUI(BuildContext context) {
     return Container(
+      height: 320,
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
       child: Opacity(
@@ -1521,33 +1525,51 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
               //
               Expanded(
                 flex: 2,
-                child: Container(
-                  margin: const EdgeInsets.all(10.0),
-                  height: 40.0,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(
-                      232,
-                      50,
-                      116,
-                      1,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      24.0,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.search,
-                        color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    //
+                    if (kDebugMode) {
+                      print('=============================');
+                      print('=====> Search Profile <=====');
+                      print('=============================');
+                    }
+                    //
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SearchFriendsScreen(),
                       ),
-                      textWithBoldStyle(
-                        ' Search Friend',
-                        Colors.white,
-                        16.0,
+                    );
+                    //
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(10.0),
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(
+                        232,
+                        50,
+                        116,
+                        1,
                       ),
-                    ],
+                      borderRadius: BorderRadius.circular(
+                        24.0,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        textWithBoldStyle(
+                          ' Search Friend',
+                          Colors.white,
+                          16.0,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )

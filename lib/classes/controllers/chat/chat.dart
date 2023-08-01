@@ -868,14 +868,14 @@ class _ChatScreenState extends State<ChatScreen> {
             'sender_firebase_id': FirebaseAuth.instance.currentUser!.uid,
             'sender_name': strLoginUserName.toString(),
             'sender_image': strLoginUserImage.toString(),
-            // 'receiver_image': widget.chatDialogData['image'].toString(),
+            'receiver_image': widget.chatDialogData['image'].toString(),
 
             // 'sender_chat_user_id': widget.strSenderChatId,
             //time stamp
             'time_stamp': DateTime.now().millisecondsSinceEpoch,
             //
             //receiver
-            // 'receiver_name': widget.chatDialogData['fullName'].toString(),
+            'receiver_name': widget.chatDialogData['fullName'].toString(),
             'receiver_firebase_id':
                 widget.chatDialogData['firebaseId'].toString(),
             'deviceToken': widget.chatDialogData['deviceToken'].toString(),
@@ -888,7 +888,8 @@ class _ChatScreenState extends State<ChatScreen> {
             'match': [
               FirebaseAuth.instance.currentUser!.uid,
               widget.chatDialogData['firebaseId'].toString()
-            ]
+            ],
+            'members_details': []
           },
         )
         .then(
@@ -932,7 +933,7 @@ class _ChatScreenState extends State<ChatScreen> {
         'time_stamp': DateTime.now().millisecondsSinceEpoch,
         'message': lastMessage,
         // 'sender_name': strLoginUserName.toString(),
-        'receiver_name': createName.toString(),
+        // 'receiver_name': createName.toString(),
       },
       SetOptions(merge: true),
     ).then(

@@ -85,9 +85,11 @@ class _GroupChatDetailsScreenState extends State<GroupChatDetailsScreen> {
     if (kDebugMode) {
       print('================ GROUP DATA =====================');
       print(widget.dictGetDataForDetails);
-      print(widget.dictGetDataForDetails['members_details']);
-      print(widget.dictGetDataForDetails['members_details'].length);
-      print(widget.dictGetDataForDetails['members_details'].length.runtimeType);
+      print('================ GROUP ID =====================');
+      print(widget.dictGetDataForDetails['group_id'].toString());
+      // print(widget.dictGetDataForDetails['members_details']);
+      // print(widget.dictGetDataForDetails['members_details'].length);
+      // print(widget.dictGetDataForDetails['members_details'].length.runtimeType);
       print('=================================================');
     }
     super.initState();
@@ -454,6 +456,10 @@ class _GroupChatDetailsScreenState extends State<GroupChatDetailsScreen> {
                                                       dictDetails: snapshot
                                                               .data!.docs[0]
                                                           ['members_details'],
+                                                      groupId: widget
+                                                          .dictGetDataForDetails[
+                                                              'group_id']
+                                                          .toString(),
                                                     ),
                                                   ),
                                                 );

@@ -1005,6 +1005,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   //
   Future<void> pushToChatDetails(BuildContext context) async {
     //
+    print('object 4321');
     final result = await Navigator.push(
         context,
         MaterialPageRoute(

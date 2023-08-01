@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
@@ -10,9 +11,11 @@ import '../../controllers/my_friends/my_friends_modal/my_friends_modal.dart';
 import '../../header/utils.dart';
 
 class GroupFriendsListScreen extends StatefulWidget {
-  const GroupFriendsListScreen({super.key, this.dictDetails});
+  const GroupFriendsListScreen(
+      {super.key, this.dictDetails, required this.groupId});
 
   final dictDetails;
+  final String groupId;
 
   @override
   State<GroupFriendsListScreen> createState() => _GroupFriendsListScreenState();
@@ -27,11 +30,18 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
   var strLoginFirebaseId = '';
   var strFriendLoader = '1';
   //
+  var createArray = [];
+  var arrDummy = [];
+  //
   @override
   void initState() {
     //
     handler = DataBase();
 
+    print('=================================');
+    print('============ GROUP ID ===========');
+    print(widget.groupId);
+    print('=================================');
     //
     funcGetLocalDBdata();
     super.initState();
@@ -69,16 +79,17 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
                 friendApiCall
                     .friendsWB(
                       strLoginUserId.toString(),
-                      '1',
+                      '2',
                     )
                     .then((value) => {
-                          setState(() {
-                            arrSearchFriend = value;
-                            strFriendLoader = '1';
-                            //
-                            funcManageXMPPAndLocalFriends();
-                            //
-                          })
+                          // setState(() {
+                          arrSearchFriend = value,
+                          strFriendLoader = '1',
+                          //
+                          // funcManageXMPPAndLocalFriends();
+                          funcCheckIsThisFriendIsAvailaibleOrNot(),
+                          //
+                          //})
                         }),
                 //
                 //
@@ -89,19 +100,42 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
     //
   }
 
+  funcCheckIsThisFriendIsAvailaibleOrNot() {
+    // print('=================== XMPP MEMBERS =========================');
+    // print(widget.dictDetails);
+    // print(widget.dictDetails.length);
+    // print('==============');
+    // print('==============');
+
+    // print(arrSearchFriend);
+
+    /*for (int j = 0; j < widget.dictDetails.length; j++) {
+      print('j =====> ' '$j');
+      for (int i = 0; i < arrSearchFriend.length; i++) {
+        // remove my data from xmpp
+        print('i =====> ' '$i');
+      }
+    }*/
+    //
+    // createArray = widget.dictDetails;
+    // print(createArray);
+
+    funcManageXMPPAndLocalFriends();
+  }
+
   //
   funcManageXMPPAndLocalFriends() {
     print('=================== XMPP MEMBERS =========================');
     print(widget.dictDetails);
     print('==========================================================');
-    print('=================== LOCAL MEMBERS =========================');
-    print(arrSearchFriend);
-    print('==========================================================');
+    // print('=================== LOCAL MEMBERS =========================');
+    // print(arrSearchFriend);
+    // print('==========================================================');
     //
     /*
     
         */
-    var arrDummy = [];
+
     for (int z = 0; z < arrSearchFriend.length; z++) {
       var custom = {
         'evs_id': (strLoginUserId == arrSearchFriend[z]['userId'].toString())
@@ -124,12 +158,38 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
       arrDummy.add(custom);
     }
     //
-    print('=================== DUMMY =========================');
-    print(arrDummy);
-    print(arrDummy.length);
-    print('===================================================');
+    // print('=================== DUMMY =========================');
+    // print(arrDummy);
+    // print(arrDummy.length);
+    // print('===================================================');
     //
-    var arrA = [];
+    for (int i = 0; i < widget.dictDetails.length; i++) {
+      if (i == 0) {
+      } else {
+        print('work done');
+        print(widget.dictDetails[i]);
+        //
+        //
+        for (int j = 0; j < arrDummy.length; j++) {
+          print(j);
+          if (widget.dictDetails[i]['evs_id'].toString() ==
+              arrDummy[j]['evs_id'].toString()) {
+            print('remove');
+            //
+            arrDummy.removeAt(j);
+          } else {
+            // print('do not remove');
+          }
+        }
+        //
+        print('=================== DUMMY =========================');
+        print(arrDummy);
+        print(arrDummy.length);
+      }
+    }
+    setState(() {});
+    //
+    /*var arrA = [];
     var arrB = [];
     print('xmpp friends');
     //
@@ -168,7 +228,7 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
     var result = ids2.toSet().toList();
     print(result);
     //
-    for (int i = 0; i < result.length; i++) {}
+    for (int i = 0; i < result.length; i++) {}*/
   }
 
   //
@@ -192,6 +252,159 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         ),
         backgroundColor: navigationColor,
       ),
+      body: Column(
+        children: [
+          //
+
+          for (int i = 0; i < arrDummy.length; i++) ...[
+            //
+            //
+            ListTile(
+              title: textWithRegularStyle(
+                arrDummy[i]['name'].toString(),
+                Colors.black,
+                14.0,
+              ),
+              //
+              trailing: IconButton(
+                onPressed: () {
+                  //
+                  funcAddOneParticipant(i);
+                  //
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+              ),
+            ),
+            //
+            Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey[350],
+            )
+            //
+          ],
+        ],
+      ),
+    );
+  }
+
+  //
+  //
+  funcAddOneParticipant(indexx) {
+    //
+    var arrCustomDataAdd = [];
+    var custom = {
+      'evs_id': arrDummy[indexx]['evs_id'].toString(),
+      'name': arrDummy[indexx]['name'].toString(),
+      'firebase_id': arrDummy[indexx]['firebase_id'].toString(),
+      'profile_picture': arrDummy[indexx]['profile_picture'].toString(),
+      'type': 'member',
+      'active': 'yes'
+    };
+    //
+    arrCustomDataAdd.add(custom);
+
+    print('=================================================');
+    print('=================================================');
+    print(arrCustomDataAdd);
+    print(arrDummy.removeAt(indexx));
+    print('=================================================');
+    print('=================================================');
+    setState(() {});
+    //
+    funcFind(arrCustomDataAdd[indexx]);
+    //
+  }
+
+  //
+  funcFind(data1) {
+    FirebaseFirestore.instance
+        .collection("${strFirebaseMode}dialog")
+        .doc("India")
+        .collection("details")
+        .where("group_id", isEqualTo: widget.groupId.toString())
+        .get()
+        .then((value) {
+      if (kDebugMode) {
+        print(value.docs);
+      }
+
+      if (value.docs.isEmpty) {
+        if (kDebugMode) {
+          print('======> NO USER FOUND');
+        }
+        //
+        //
+        // Navigator.pop(context);
+        //
+      } else {
+        for (var element in value.docs) {
+          if (kDebugMode) {
+            print('======> YES,  USER FOUND');
+          }
+          if (kDebugMode) {
+            print(element.id);
+            // print(element.data()['']);
+            // print(element.id.runtimeType);
+          }
+          //
+          funcUpdate(
+            element.id,
+            data1,
+          );
+        }
+      }
+    });
+
+    //
+  }
+
+  //
+  //
+  funcUpdate(elementId, data2) {
+    FirebaseFirestore.instance
+        .collection("${strFirebaseMode}dialog")
+        .doc('India')
+        .collection('details')
+        .doc(elementId)
+        .set(
+      {
+        'members_details': FieldValue.arrayUnion([
+          data2,
+        ]),
+      },
+      SetOptions(merge: true),
+    ).then(
+      (value1) {
+        //
+        funcUpdateMatch(elementId, data2); //
+      },
+    );
+  }
+
+  //
+  // also update match
+  funcUpdateMatch(elementId3, data3) {
+    FirebaseFirestore.instance
+        .collection("${strFirebaseMode}dialog")
+        .doc('India')
+        .collection('details')
+        .doc(elementId3)
+        .set(
+      {
+        'match': FieldValue.arrayUnion([
+          data3['firebase_id'],
+        ]),
+      },
+      SetOptions(merge: true),
+    ).then(
+      (value1) {
+        //
+        // Navigator.pop(context);
+        //
+      },
     );
   }
 }
