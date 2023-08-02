@@ -112,6 +112,73 @@ void showLoadingUI(BuildContext context, String message) async {
 }
 
 //
+void callEnded(BuildContext context, String message) async {
+  await showDialog(
+    barrierDismissible: true,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // const SizedBox(height: 8),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: textWithRegularStyle(
+                    //
+                    message,
+                    //
+                    Colors.black,
+                    14.0,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Flexible(
+                child: Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: textWithBoldStyle(
+                      'report this post ?',
+                      Colors.redAccent,
+                      18.0,
+                    ),
+                  ),
+                ),
+              ),
+              // const SizedBox(
+              //   height: 40,
+              // ),
+              // Flexible(
+              //   child: Container(
+              //     height: 40,
+              //     width: MediaQuery.of(context).size.width,
+              //     color: Colors.transparent,
+              //     child: Center(
+              //       child: textWithBoldStyle(
+              //         'report',
+              //         Colors.black,
+              //         18.0,
+              //       ),
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+//
 void showHomePopUp(BuildContext context, String message) async {
   await showDialog(
     barrierDismissible: true,

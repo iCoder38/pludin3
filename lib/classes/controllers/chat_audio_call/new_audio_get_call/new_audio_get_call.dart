@@ -1,30 +1,25 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, unused_field, prefer_final_fields, use_build_context_synchronously
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pludin/classes/controllers/database/database_helper.dart';
 import 'package:pludin/classes/header/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class NewAudioCallScreen extends StatefulWidget {
-  const NewAudioCallScreen(
+class NewAudioGetCallScreen extends StatefulWidget {
+  const NewAudioGetCallScreen(
       {super.key, this.getFullDetailsOfThatDialog, required this.callStatus});
-
   final getFullDetailsOfThatDialog;
   final String callStatus;
-
   @override
-  State<NewAudioCallScreen> createState() => _NewAudioCallScreenState();
+  State<NewAudioGetCallScreen> createState() => _NewAudioGetCallScreenState();
 }
 
-class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
+class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
+  //
   //
   var localCallStatus = '0';
   //
@@ -49,21 +44,9 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
   late RtcEngine agoraEngine;
   //
   var strUserGetCall = '0';
-  String _printDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-  }
-
   @override
   void initState() {
     //
-    // final now = Duration(seconds: 30);
-    // print("${_printDuration(now)}");
-    //
-    // String sDuration = "${duration.inHours}:${duration.inMinutes.remainder(60)}:${(duration.inSeconds.remainder(60))}";
-
     handler = DataBase();
     //
     if (kDebugMode) {
@@ -75,24 +58,12 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
       print('=============================================');
     }
 
-//
-
-    //
-    //
-
-    //
     funcGetLocalDBdata();
-    //
-    localCallStatus = '0';
-    //
-    channelName =
-        '${widget.getFullDetailsOfThatDialog['sender_firebase_id'].toString()}+${widget.getFullDetailsOfThatDialog['receiver_firebase_id'].toString()}';
 
     super.initState();
   }
 
-  //
-  // get local db
+// get local db
   funcGetLocalDBdata() {
     handler.retrievePlanets().then(
       (value) {
@@ -116,7 +87,9 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
                     strLoginUserImage = value[i].image.toString(),
                     strLoginUserFirebaseId = value[i].firebaseId.toString(),
                     //
-                    funcRefreshScreenAndInitAgora(),
+                    // funcRefreshScreenAndInitAgora(),
+                    setupVoiceSDKEngine(),
+                    funcGetCallManage(),
                     //
                   },
               });
@@ -126,49 +99,82 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
     //
   }
 
-  //
-  funcRefreshScreenAndInitAgora() {
-    // init agora first
+  funcGetCallManage() {
+    channelName = widget.getFullDetailsOfThatDialog['channelName'].toString();
+
+    //
+    final values =
+        widget.getFullDetailsOfThatDialog['channelName'].toString().split('+');
     if (kDebugMode) {
-      print('=====> agora init DONE');
+      print(values);
     }
-    setupVoiceSDKEngine();
     //
     //
-    if (!mounted) return;
-    setState(() {
-      //
-      if (widget.getFullDetailsOfThatDialog['sender_firebase_id'].toString() ==
-          strLoginUserFirebaseId.toString()) {
-        //
-        strOtherUserName =
-            widget.getFullDetailsOfThatDialog['receiver_name'].toString();
-        strOtherUserImage =
-            widget.getFullDetailsOfThatDialog['receiver_image'].toString();
-        strOtherFirebaseId = widget
-            .getFullDetailsOfThatDialog['receiver_firebase_id']
-            .toString();
+    if (kDebugMode) {
+      print('Login user FID');
+      print(FirebaseAuth.instance.currentUser!.uid);
+      print(strLoginUserFirebaseId);
+      print('Login user FID');
+    }
+
+    for (int i = 0; i < values.length; i++) {
+      if (values[i].toString() == FirebaseAuth.instance.currentUser!.uid) {
+        if (kDebugMode) {
+          print('YES, MATCHED');
+          print(i);
+          print('YES, MATCHED');
+        }
       } else {
-        strOtherUserName =
-            widget.getFullDetailsOfThatDialog['sender_name'].toString();
-        strOtherUserImage =
-            widget.getFullDetailsOfThatDialog['sender_image'].toString();
-        strOtherFirebaseId =
-            widget.getFullDetailsOfThatDialog['sender_firebase_id'].toString();
+        if (kDebugMode) {
+          print('NOT, MATCHED');
+          print(values[i]);
+          print('NOT, MATCHED');
+        }
+        //
+        FirebaseFirestore.instance
+            .collection("${strFirebaseMode}member")
+            .doc("India")
+            .collection("details")
+            .where("firebaseId", isEqualTo: values[i].toString())
+            .get()
+            .then((value) {
+          if (kDebugMode) {
+            print(value.docs);
+          }
+
+          if (value.docs.isEmpty) {
+            if (kDebugMode) {
+              print('======> NO USER FOUND');
+            }
+            //
+          } else {
+            for (var element in value.docs) {
+              if (kDebugMode) {
+                print('======> YES,  USER FOUND');
+                print(element.data()['name'].toString());
+              }
+              //
+              strOtherUserName = element.data()['name'].toString();
+              strOtherUserImage = element.data()['image'].toString();
+              setState(() {
+                localCallStatus = '2';
+              });
+              //
+              join();
+              //
+              //
+            }
+          }
+        });
+        //
       }
-      //
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: whoMakeTheCallUI(context),
-    );
-  }
-
-  Column whoMakeTheCallUI(BuildContext context) {
-    return Column(
+        body: Column(
       children: [
         //
         Expanded(
@@ -267,30 +273,13 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
                           //
 
                           //
-                          if (localCallStatus == '1')
-                            textWithRegularStyle(
-                              //
-                              'waiting for $strOtherUserName to join...',
-                              //
-                              Colors.black,
-                              18.0,
-                            )
-                          else if (localCallStatus == '3')
-                            textWithBoldStyle(
-                              //
-                              strOtherUserName.toString(),
-                              //
-                              Colors.black,
-                              18.0,
-                            )
-                          else
-                            textWithBoldStyle(
-                              //
-                              strOtherUserName.toString(),
-                              //
-                              Colors.black,
-                              18.0,
-                            ),
+                          textWithBoldStyle(
+                            //
+                            strOtherUserName.toString(),
+                            //
+                            Colors.black,
+                            18.0,
+                          ),
                           //
                         ],
                       ),
@@ -360,7 +349,12 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
           ),
         ),
         //r
+
         if (localCallStatus == '0') ...[
+          // show both button
+          acceptDeclineUI(context)
+        ] else if (localCallStatus == '2') ...[
+          // phone accept, show only decline
           Expanded(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -368,72 +362,23 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //
-                  GestureDetector(
-                    onTap: () {
-                      //
-                      if (!mounted) return;
-                      setState(() {
-                        localCallStatus = '1';
-                      });
-
-                      //
-                      funcGetDeviceTokenFromXMPP();
-                      //
-                    },
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(
-                          40.0,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 4,
-                            blurRadius: 6,
-                            offset: const Offset(
-                              0,
-                              3,
-                            ), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: textWithBoldStyle(
-                          'Call',
-                          Colors.white,
-                          18.0,
-                        ),
-                      ),
-                    ),
+                  const SizedBox(
+                    width: 10,
                   ),
                   //
-                ],
-              ),
-            ),
-          )
-        ] else if (localCallStatus == '1' || localCallStatus == '3') ...[
-          Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //
                   GestureDetector(
                     onTap: () {
                       //
+                      setState(() {
+                        localCallStatus = '3';
+                      });
+                      //
                       leave();
-                      // showLoadingUI(context, 'please wait...');
                       //
                     },
                     child: Container(
                       height: 80,
-                      width: 80,
+                      width: 140,
                       decoration: BoxDecoration(
                         color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(
@@ -453,25 +398,129 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
                       ),
                       child: Center(
                         child: textWithBoldStyle(
-                          'End',
+                          'Decline',
                           Colors.white,
                           18.0,
                         ),
                       ),
                     ),
                   ),
-                  //
                 ],
               ),
             ),
-          ),
+          )
         ]
 
         //
       ],
+    ));
+  }
+
+  Expanded acceptDeclineUI(BuildContext context) {
+    return Expanded(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //
+            GestureDetector(
+              onTap: () {
+                //
+                setState(() {
+                  localCallStatus = '2';
+                });
+                //
+                join();
+
+                //
+                // funcGetDeviceTokenFromXMPP();
+                //
+              },
+              child: Container(
+                height: 80,
+                width: 140,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(
+                    40.0,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 4,
+                      blurRadius: 6,
+                      offset: const Offset(
+                        0,
+                        3,
+                      ), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: textWithBoldStyle(
+                    'Accept',
+                    Colors.white,
+                    18.0,
+                  ),
+                ),
+              ),
+            ),
+            /*//
+            const SizedBox(
+              width: 10,
+            ),
+            //
+            GestureDetector(
+              onTap: () {
+                //
+                setState(() {
+                  localCallStatus = '3';
+                });
+                //
+                join();
+
+                //
+                // funcGetDeviceTokenFromXMPP();
+                //
+              },
+              child: Container(
+                height: 80,
+                width: 140,
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(
+                    40.0,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 4,
+                      blurRadius: 6,
+                      offset: const Offset(
+                        0,
+                        3,
+                      ), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: textWithBoldStyle(
+                    'Decline',
+                    Colors.white,
+                    18.0,
+                  ),
+                ),
+              ),
+            ),*/
+          ],
+        ),
+      ),
     );
   }
 
+  //
   //
   // register
   //
@@ -512,7 +561,6 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
           if (!mounted) return;
           setState(() {
             _remoteUid = remoteUid;
-            localCallStatus = '3';
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
@@ -527,146 +575,20 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
           setState(() {
             leave();
           });
+
+          //
+
+          /*if (!mounted) return;
+          setState(() {
+            _remoteUid = null;
+          });*/
           //
         },
       ),
     );
   }
 
-  funcGetDeviceTokenFromXMPP() {
-    //
-    showLoadingUI(context, 'please wait...');
-    //
-    FirebaseFirestore.instance
-        .collection("${strFirebaseMode}member")
-        .doc("India")
-        .collection("details")
-        .where("firebaseId", isEqualTo: strOtherFirebaseId.toString())
-        .get()
-        .then((value) {
-      if (kDebugMode) {
-        print(value.docs);
-      }
-
-      if (value.docs.isEmpty) {
-        if (kDebugMode) {
-          print('======> NO USER FOUND');
-        }
-        //
-        Navigator.pop(context);
-        //
-      } else {
-        for (var element in value.docs) {
-          if (kDebugMode) {
-            print('======> YES,  USER FOUND');
-          }
-          /*if (kDebugMode) {
-            print(element.id);
-            print(element.data()['firebaseId']);
-            print(element.data()['deviceToken']);
-            print(element.data()['device']);
-            // print(element.id.runtimeType);
-          }*/
-          //
-          funcSendNotification(
-            element.data()['deviceToken'].toString(),
-            element.data()['firebaseId'].toString(),
-            element.data()['device'].toString(),
-          );
-        }
-      }
-    });
-
-    //
-  }
-
-  funcSendNotification(
-    getDeviceToken,
-    getFirebaseId,
-    getDevice,
-  ) async {
-    // upload feeds data to time line
-
-    //
-    /*
-     [action] => groupsentnotification
-    [message] => 
-    [userId] => Yg3764MgSeS4Vutp96ldyLHabHo1
-    [name] => neema
-    [image] => https://demo4.evirtualservices.net/pludin/img/uploads/users/1690283219image_picker_3DAF8074-715C-431C-8F2A-290CA0402C04-473-00000014264D3CD8.jpg
-    [deviceJson] => [{"device":"Android","deviceToken":"dc8Ajo9NTda4p69WKqzcNl:APA91bE34U1CGtaJXAHKm8YGUQsRB5sc33iWdE_PljFspR0A8T9LVzmcqvQMhsbtYJyO_OFS5XhG3yuP65-91eN69te4KjW2SAQYRgnCjMBototEp64U2aStKVmR05w--LfZJjswsnDO"}]
-    [type] => audioCall
-    [channelName] */
-    // showLoadingUI(context, 'uploading...');
-    //
-    if (kDebugMode) {
-      print('=====> POST : SEND NOTIFICATION <===== ');
-      print(getDeviceToken);
-      print(getFirebaseId);
-      print(getDevice);
-    }
-
-    var customJsonArray = [
-      {
-        'device': getDevice.toString(),
-        'deviceToken': getDeviceToken.toString(),
-      }
-    ];
-
-    if (kDebugMode) {
-      print(customJsonArray);
-    }
-
-    String encoded = jsonEncode(customJsonArray);
-
-    final resposne = await http.post(
-      Uri.parse(
-        applicationBaseURL,
-      ),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'action': 'groupsentnotification',
-          'message': 'Incoming Audio Call',
-          'userId': strLoginUserFirebaseId.toString(),
-          'name': strLoginUserName.toString(),
-          'image': strLoginUserImage.toString(),
-          'deviceJson': encoded,
-          'type': 'audioCall',
-          'channelName': channelName.toString(),
-        },
-      ),
-    );
-
-    // convert data to dict
-    var data = jsonDecode(resposne.body);
-    if (kDebugMode) {
-      print(data);
-    }
-
-    if (resposne.statusCode == 200) {
-      if (data['status'].toString().toLowerCase() == 'success') {
-        //
-        //
-        Navigator.pop(context);
-        //
-        join();
-
-        //
-      } else {
-        if (kDebugMode) {
-          print(
-            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
-          );
-        }
-      }
-    } else {
-      // return postList;
-    }
-  }
-
+  //
   // JOIN CHANNEL METHOD
   void join() async {
     // Set channel options including the client role and channel profile
@@ -681,13 +603,27 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
       options: options,
       uid: uid,
     );
+    // .then((value) => {
+    //       //
+    //       if (localCallStatus == '3')
+    //         {
+    //           print(' ================================='),
+    //           print(' ================================='),
+    //           print(' =====> user decline incoming call'),
+    //           agoraEngine.leaveChannel().then((value) => {
+    //                 setState(() {
+    //                   localCallStatus = '0';
+    //                   Navigator.pop(context);
+    //                 }),
+    //               })
+    //         }
+    //     });
   }
 
   //
   // LEAVE
   void leave() {
     // dispose();
-    if (!mounted) return;
     setState(() {
       _isJoined = false;
       _remoteUid = null;

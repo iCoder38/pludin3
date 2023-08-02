@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pludin/classes/chat_video_call/new_video_call/new_video_get_call/new_video_get_call.dart';
 import 'package:pludin/classes/controllers/UI/designs/splash_bg/splash_bg.dart';
 import 'package:pludin/classes/controllers/UI/designs/splash_mid_logo/splash_center_logo.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/chat_audio_call.dart';
+import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_audio_call.dart';
+import 'package:pludin/classes/controllers/chat_audio_call/new_audio_get_call/new_audio_get_call.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/database/database_helper.dart';
@@ -112,6 +115,8 @@ class _SplashScreenState extends State<SplashScreen> {
     //
     funcGetFullDataOfNotification();
     //
+    funcClickOnNotification();
+    //
   }
 
   //
@@ -143,8 +148,9 @@ class _SplashScreenState extends State<SplashScreen> {
       if (message.notification != null) {
         if (kDebugMode) {
           print('Message data: ${message.data}');
-          print(
-              'Message also contained a notification: ${message.notification}');
+          print('${message.data['userId']}');
+          // print(
+          // 'Message also contained a notification: ${message.notification}');
         }
         // setState(() {
         //   notifTitle = message.notification!.title;
@@ -152,13 +158,15 @@ class _SplashScreenState extends State<SplashScreen> {
         // });
       }
       //
-      if (message.data['type'].toString() == 'audio_call') {
+      if (message.data['type'].toString() == 'audioCall') {
         //
         if (kDebugMode) {
           print(message.data['channel_name'].toString());
+          print('PUSH TO AUDIO SCREEN');
         }
         //
-        Navigator.push(
+
+        /*Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ChatAudioCallScreen(
@@ -166,7 +174,7 @@ class _SplashScreenState extends State<SplashScreen> {
               strGetCallStatus: 'get_call',
             ),
           ),
-        );
+        );*/
         //
       } else if (message.data['type'].toString() == 'videoCall') {
         //
@@ -183,20 +191,37 @@ class _SplashScreenState extends State<SplashScreen> {
         print(remoteMessage.data);
       }
 
-      if (remoteMessage.data['type'].toString() == 'audio_call') {
+      if (remoteMessage.data['type'].toString() == 'audioCall') {
         //
-        print('user click on notification');
-      } else if (remoteMessage.data['type'].toString() == 'videoCall') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewAudioGetCallScreen(
+              getFullDetailsOfThatDialog: remoteMessage.data,
+              callStatus: 'get_call',
+            ),
+          ),
+        );
+      } else if (remoteMessage.data['type'].toString() == 'videocall') {
         //
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewVideoGetCallScreen(
+              getFullDetailsOfThatDialog: remoteMessage.data,
+              callStatus: 'get_call',
+            ),
+          ),
+        );
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Stack(
-        children: const [
+        children: [
           //
           SplashBackground(),
           //

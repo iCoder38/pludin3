@@ -47,13 +47,13 @@ dependencies:
   readmore: ^2.1.0
   image_picker: ^0.8.7+3
   neopop: ^1.0.2
-  firebase_core: ^2.10.0
-  firebase_messaging: ^14.4.1
+  firebase_core:
+  firebase_messaging:
   firebase_storage:
-  cloud_firestore: ^4.5.2
-  firebase_auth: ^4.4.2
+  cloud_firestore:
+  firebase_auth:
   agora_rtc_engine:
-  permission_handler: ^9.2.0
+  permission_handler:
   video_player:
   uuid: ^3.0.7
   google_maps_flutter: ^2.0.3

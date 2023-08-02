@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:pludin/classes/chat_video_call/new_video_call/new_video_call.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/chat_audio_call.dart';
 // import 'package:pludin/classes/custom/app_bar.dart';
 
@@ -236,12 +237,22 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => VideoCallScreen(
                         getAllData: widget.chatDialogData,
                         strGetCallStatus: 'make_call',
+                      ),
+                    ),
+                  );*/
+                  //
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewVideoCallScreen(
+                        getFullDetailsOfThatDialog: widget.chatDialogData,
+                        callStatus: 'make_call',
                       ),
                     ),
                   );
