@@ -2,7 +2,9 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pludin/classes/controllers/database/database_modal.dart';
 import 'package:pludin/classes/home_new/home_new_comments/home_new_comments.dart';
 import 'package:pludin/classes/home_new/home_new_image/home_new_image.dart';
 import 'package:pludin/classes/home_new/home_new_shared_image/home_new_shared_image.dart';
@@ -26,6 +29,7 @@ import 'package:pludin/classes/home_new/home_new_simple_text_UI/home_new_simple_
 import 'package:pludin/classes/home_new/home_new_video_ui/home_new_video_ui.dart';
 import 'package:pludin/classes/user_profile_new/user_profile_new.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 // import 'package:readmore/readmore.dart';
@@ -79,6 +83,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
   var strReportPostPopupDismiss = '0';
   var strHideWhenPaginationDone = '0';
   var strReCreateHomePage = '0';
+  var strGetUserDeviceToken = '';
 
   var strPlayPause = '0';
 
@@ -218,6 +223,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
       // add custom data
       arrHomePosts.add(data);
     }
+
     //
     setState(() {
       if (strLikepopupDismiss == '1') {
@@ -246,6 +252,73 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
         strLoadingWhenUserCameBackToDashboard = '0';
       }
     });
+    //
+    funcGetUserFirestoreId();
+    //
+  }
+
+  //
+  // GET FIRESTOREID TO UPDATE TOKEN
+  funcGetUserFirestoreId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    FirebaseFirestore.instance
+        .collection("${strFirebaseMode}member")
+        .doc("India")
+        .collection("details")
+        .where("firebaseId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      if (kDebugMode) {
+        print(value.docs);
+      }
+
+      if (value.docs.isEmpty) {
+        if (kDebugMode) {
+          print('======> NO USER FOUND');
+        }
+        //
+      } else {
+        for (var element in value.docs) {
+          if (kDebugMode) {
+            print('======> YES,  USER FOUND');
+          }
+          if (kDebugMode) {
+            print(element.id);
+            // print(element.data()['']);
+            // print(element.id.runtimeType);
+          }
+          //
+          //
+
+          // UPDATE DEVICE TOKEN
+          FirebaseFirestore.instance
+              .collection('${strFirebaseMode}member')
+              .doc('India')
+              .collection('details')
+              .doc(element.id)
+              .set(
+            {
+              'device': 'iOS',
+              'deviceToken': prefs.getString('deviceToken').toString(),
+            },
+            SetOptions(merge: true),
+          ).then(
+            (value) {
+              if (kDebugMode) {
+                print('======');
+                print(
+                    '==========> DONE ALL AND NOW LOGOUT AND LOGIN MAIN COMPANY <==========');
+              }
+              //
+
+              //
+            },
+          );
+        }
+      }
+    });
+
     //
   }
 
@@ -1297,22 +1370,129 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
                   {
                     strGetUserId = value[i].userId.toString(),
                     strLoginUserImage = value[i].image.toString(),
+                    strGetUserDeviceToken = value[i].deviceToken.toString()
 
                     //
                   },
-                // show loading indicator
+                // print('========= check device token =============== '),
+                // print(strGetUserDeviceToken),
 
+                /*if (strGetUserDeviceToken == '')
+                  {
+                    funcUpdateDeviceToken(),
+                  }
+                else
+                  {*/
                 funcSendUserIdToGetHomeData(
                   strGetUserId.toString(),
                   'no',
                   pageControl,
                 ),
+                // }
+                // show loading indicator
+
                 //
               });
         }
       },
     );
     //
+  }
+
+  // upload feeds data to time line
+  funcUpdateDeviceToken() async {
+    //
+    // showLoadingUI(context, 'uploading...');
+    //
+    if (kDebugMode) {
+      print('=====> POST : UPDATE DEVICE TOKEN ');
+    }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final resposne = await http.post(
+      Uri.parse(
+        applicationBaseURL,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'action': 'editprofile',
+          'userId': strGetUserId.toString(),
+          'device': 'iOS',
+          'deviceToken': prefs.getString('deviceToken').toString(),
+        },
+      ),
+    );
+
+    // convert data to dict
+    var data = jsonDecode(resposne.body);
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (resposne.statusCode == 200) {
+      if (data['status'].toString().toLowerCase() == 'success') {
+        //
+        // delete old local DB
+        handler.deletePlanet(1);
+        //
+        List<Planets> loginUserDataForLocalDB = [];
+        for (int i = 0; i < 1; i++) {
+          Planets one = Planets(
+            id: 1,
+            userId: data['data']['userId'].toString(),
+            fullName: data['data']['fullName'].toString(),
+            lastName: data['data']['lastName'].toString(),
+            middleName: data['data']['middleName'].toString(),
+            email: data['data']['email'].toString(),
+            gender: data['data']['gender'].toString(),
+            contactNumber: data['data']['contactNumber'].toString(),
+            role: data['data']['role'].toString(),
+            dob: data['data']['dob'].toString(),
+            address: data['data']['address'].toString(),
+            zipCode: data['data']['zipCode'].toString(),
+            city: data['data']['city'].toString(),
+            state: data['data']['state'].toString(),
+            status: data['data']['status'].toString(),
+            image: data['data']['image'].toString(),
+            device: data['data']['device'].toString(),
+            deviceToken: data['data']['deviceToken'].toString(),
+            socialId: data['data']['socialId'].toString(),
+            socialType: data['data']['socialType'].toString(),
+            latitude: data['data']['latitude'].toString(),
+            longitude: data['data']['longitude'].toString(),
+            firebaseId: data['data']['firebaseId'].toString(),
+            username: data['data']['username'].toString(),
+          );
+
+          loginUserDataForLocalDB.add(one);
+        }
+        //
+        // print('object 3333');
+        if (kDebugMode) {
+          print(loginUserDataForLocalDB);
+        }
+        handler.insertPlanets(loginUserDataForLocalDB);
+        //
+        funcSendUserIdToGetHomeData(
+          strGetUserId.toString(),
+          'no',
+          pageControl,
+        );
+        //
+      } else {
+        if (kDebugMode) {
+          print(
+            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
+          );
+        }
+      }
+    } else {
+      // return postList;
+    }
   }
 
   //

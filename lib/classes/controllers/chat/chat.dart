@@ -14,6 +14,7 @@ import 'package:pludin/classes/controllers/chat_audio_call/chat_audio_call.dart'
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pludin/classes/chat_video_call/video_call.dart';
+import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_audio_call.dart';
 
 import '../../header/utils.dart';
 import '../database/database_helper.dart';
@@ -188,12 +189,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ChatAudioCallScreen(
                         getAllData: widget.chatDialogData,
                         strGetCallStatus: 'make_call',
+                      ),
+                    ),
+                  );*/
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewAudioCallScreen(
+                        getFullDetailsOfThatDialog: widget.chatDialogData,
+                        callStatus: 'make_call',
                       ),
                     ),
                   );
