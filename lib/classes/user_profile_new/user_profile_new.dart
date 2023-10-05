@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously, unrelated_type_equality_checks
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, unrelated_type_equality_checks, non_constant_identifier_names
 
 import 'dart:convert';
 import 'dart:io';
@@ -1633,7 +1633,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                             ),
                           ),
                         )
-                      : (fetchedAllData['friendStatus'].toString() == '')
+                      : (fetchedAllData['friendStatus'].toString() == '0')
                           ? Expanded(
                               flex: 2,
                               child: InkWell(

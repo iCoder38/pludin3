@@ -153,23 +153,6 @@ void callEnded(BuildContext context, String message) async {
                   ),
                 ),
               ),
-              // const SizedBox(
-              //   height: 40,
-              // ),
-              // Flexible(
-              //   child: Container(
-              //     height: 40,
-              //     width: MediaQuery.of(context).size.width,
-              //     color: Colors.transparent,
-              //     child: Center(
-              //       child: textWithBoldStyle(
-              //         'report',
-              //         Colors.black,
-              //         18.0,
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),

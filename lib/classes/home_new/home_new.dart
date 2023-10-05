@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, deprecated_member_use, invalid_return_type_for_catch_error
 
 import 'dart:convert';
 import 'dart:io';
@@ -68,6 +68,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
   var arrHomePosts = [];
   //
   // login user data var
+  var strGetUserName = '';
   var strGetUserId = '';
   var strLoginUserImage = '';
   //
@@ -278,6 +279,40 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
           print('======> NO USER FOUND');
         }
         //
+        CollectionReference users = FirebaseFirestore.instance.collection(
+          '${strFirebaseMode}member/India/details',
+        );
+
+        users
+            .add(
+              {
+                'device': 'iOS',
+                'firebaseId': FirebaseAuth.instance.currentUser!.uid,
+                'deviceToken': strGetUserDeviceToken,
+                'image': strLoginUserImage.toString(),
+                'name': strGetUserName.toString(),
+                'time_stamp': '',
+              },
+            )
+            .then((value) => {
+                  print(value.id),
+                })
+            .catchError((error) => {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: navigationColor,
+                      content: textWithBoldStyle(
+                        //
+                        'Failed to add. Please try again after sometime.'
+                            .toString(),
+                        //
+                        Colors.white,
+                        14.0,
+                      ),
+                    ),
+                  ),
+                });
+        //
       } else {
         for (var element in value.docs) {
           if (kDebugMode) {
@@ -290,6 +325,9 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
           }
           //
           //
+          /*
+          
+          */
 
           // UPDATE DEVICE TOKEN
           FirebaseFirestore.instance
@@ -300,6 +338,8 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
               .set(
             {
               'device': 'iOS',
+              'name': strGetUserName.toString(),
+              'image': strLoginUserImage.toString(),
               'deviceToken': prefs.getString('deviceToken').toString(),
             },
             SetOptions(merge: true),
@@ -1370,6 +1410,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
                   {
                     strGetUserId = value[i].userId.toString(),
                     strLoginUserImage = value[i].image.toString(),
+                    strGetUserName = value[i].fullName.toString(),
                     strGetUserDeviceToken = value[i].deviceToken.toString()
 
                     //
@@ -2516,12 +2557,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
   funcGetUserLatAndLong() async {
     var myLocation = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low);
-    // if (kDebugMode) {
-    //   print(myLocation.latitude);
-    // }
-    // if (kDebugMode) {
-    //   print(myLocation.longitude);
-    // }
+
     //
     strUserLat = myLocation.latitude;
     strUserLong = myLocation.longitude;

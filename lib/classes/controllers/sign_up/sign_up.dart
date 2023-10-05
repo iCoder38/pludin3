@@ -1,8 +1,9 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, invalid_return_type_for_catch_error
 
 import 'dart:io';
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -1008,7 +1009,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (kDebugMode) {
         print('success');
       }
-      //
+
+//
       // success
       QuickAlert.show(
         context: context,

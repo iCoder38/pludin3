@@ -56,7 +56,7 @@ class _MenuNameScreenState extends State<MenuNameScreen> {
               decoration: BoxDecoration(
                 image: const DecorationImage(
                   image: AssetImage(
-                    'assets/images/2.jpg',
+                    'assets/images/logo.png',
                   ),
                   fit: BoxFit.cover,
                 ),

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +32,8 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
   //
   var createArray = [];
   var arrDummy = [];
+  //
+  var str_screeen_alert = '0';
   //
   @override
   void initState() {
@@ -185,6 +187,9 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         print('=================== DUMMY =========================');
         print(arrDummy);
         print(arrDummy.length);
+        if (arrDummy.isEmpty) {
+          str_screeen_alert = '2';
+        }
       }
     }
     setState(() {});
@@ -252,41 +257,49 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         ),
         backgroundColor: navigationColor,
       ),
-      body: Column(
-        children: [
-          //
-
-          for (int i = 0; i < arrDummy.length; i++) ...[
-            //
-            //
-            ListTile(
-              title: textWithRegularStyle(
-                arrDummy[i]['name'].toString(),
+      body: (str_screeen_alert == '2')
+          ? Center(
+              child: textWithRegularStyle(
+                'All of your friends are added in this group.',
                 Colors.black,
                 14.0,
               ),
-              //
-              trailing: IconButton(
-                onPressed: () {
-                  //
-                  funcAddOneParticipant(i);
-                  //
-                },
-                icon: const Icon(
-                  Icons.add,
-                ),
-              ),
-            ),
-            //
-            Container(
-              height: 1,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.grey[350],
             )
-            //
-          ],
-        ],
-      ),
+          : Column(
+              children: [
+                //
+
+                for (int i = 0; i < arrDummy.length; i++) ...[
+                  //
+                  //
+                  ListTile(
+                    title: textWithRegularStyle(
+                      arrDummy[i]['name'].toString(),
+                      Colors.black,
+                      14.0,
+                    ),
+                    //
+                    trailing: IconButton(
+                      onPressed: () {
+                        //
+                        funcAddOneParticipant(i);
+                        //
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                      ),
+                    ),
+                  ),
+                  //
+                  Container(
+                    height: 1,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey[350],
+                  )
+                  //
+                ],
+              ],
+            ),
     );
   }
 

@@ -369,8 +369,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                                     .toString())
                                             ? textWithBoldStyle(
                                                 //
-                                                arrFriends[i]['FirstfullName']
-                                                    .toString(),
+                                                ' ' +
+                                                    arrFriends[i]
+                                                            ['FirstfullName']
+                                                        .toString(),
                                                 // '12',
                                                 //
                                                 Colors.black,
@@ -378,8 +380,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                               )
                                             : textWithBoldStyle(
                                                 //
-                                                arrFriends[i]['SecondfullName']
-                                                    .toString(),
+                                                ' ' +
+                                                    arrFriends[i]
+                                                            ['SecondfullName']
+                                                        .toString(),
                                                 // '12',
                                                 //
                                                 Colors.black,
@@ -539,21 +543,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                           Expanded(
                             child: (strLoginUserId ==
                                     arrFriends[i]['userId'].toString())
-                                ? textWithBoldStyle(
-                                    //
-                                    arrFriends[i]['FirstfullName'].toString(),
-                                    // '12',
-                                    //
+                                ? textWithRegularStyle(
+                                    ' ${arrFriends[i]['FirstfullName']}',
                                     Colors.black,
-                                    16.0,
+                                    14.0,
                                   )
-                                : textWithBoldStyle(
-                                    //
-                                    arrFriends[i]['SecondfullName'].toString(),
-                                    // '12',
-                                    //
+                                : textWithRegularStyle(
+                                    ' ${arrFriends[i]['FirstfullName']}',
                                     Colors.black,
-                                    16.0,
+                                    14.0,
                                   ),
                           ),
                           //

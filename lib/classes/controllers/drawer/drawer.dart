@@ -160,7 +160,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
                           decoration: BoxDecoration(
                             image: const DecorationImage(
                               image: AssetImage(
-                                'assets/images/2.jpg',
+                                'assets/images/logo.png',
                               ),
                               fit: BoxFit.cover,
                             ),

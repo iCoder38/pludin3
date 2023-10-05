@@ -1,7 +1,13 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print, use_build_context_synchronously
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pludin/classes/controllers/drawer/drawer.dart';
+import 'package:pludin/classes/controllers/my_friends/my_friend_new_modal/my_friends_new_modal.dart';
 import 'package:pludin/classes/controllers/my_friends/my_friends_modal/my_friends_modal.dart';
 import 'package:pludin/classes/controllers/profile/my_profile.dart';
 import 'package:pludin/classes/header/utils.dart';
@@ -19,12 +25,18 @@ class MyFriendsScreen extends StatefulWidget {
 
 class _MyFriendsScreenState extends State<MyFriendsScreen> {
   //
+  var screen_loader = '0';
+  var screen_message_alert_message = '0';
+  final MyFriendsList my_friends_list = MyFriendsList();
+  //
   int segmentedControlValue = 0;
   //
   var strFriendLoader = '0';
   late DataBase handler;
   var strLoginUserId = '';
   var arrSearchFriend = [];
+  //
+  var str_user_select_which_profile = '1';
   //
   final friendApiCall = FriendModal();
   //
@@ -65,7 +77,12 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
                   },
                 //
                 // HIT WEBSERVICE TO SEARCH FRIEND
-                friendApiCall
+                func_call_api(
+                  strLoginUserId,
+                  '2',
+                  '0',
+                ),
+                /*friendApiCall
                     .friendsWB(
                       strLoginUserId.toString(),
                       '2',
@@ -75,12 +92,64 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
                             arrSearchFriend = value;
                             strFriendLoader = '1';
                           })
-                        }),
+                        }),*/
                 //
               });
         }
       },
     );
+    //
+  }
+
+  func_call_api(login_user_id, status, type) {
+    //
+    setState(() {
+      screen_loader = '1';
+    });
+    my_friends_list
+        .funcMyFriendsListOrRequestWB(
+          login_user_id.toString(),
+          status,
+          type,
+        )
+        .then((value) => {
+              //
+              print(value),
+              //
+              arrSearchFriend = value,
+              print(arrSearchFriend.length),
+              if (arrSearchFriend.isEmpty)
+                {
+                  //
+                  print(type),
+                  if (type == '1')
+                    {
+                      screen_message_alert_message = 'No data found',
+                    }
+                  else if (type == '2')
+                    {
+                      screen_message_alert_message =
+                          'You have not received any new friend request yet.',
+                    }
+                  else
+                    {
+                      screen_message_alert_message = 'No request found',
+                    },
+
+                  //
+                  setState(() {
+                    screen_loader = '2';
+                  }),
+                }
+              else
+                {
+                  //
+
+                  setState(() {
+                    screen_loader = '0';
+                  }),
+                }
+            });
     //
   }
 
@@ -112,354 +181,528 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
         width: MediaQuery.of(context).size.width,
         child: const navigationDrawer(),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
+      body: Column(
+        children: [
+          //
+          tabs_UI(context),
+
+          if (str_user_select_which_profile == '1') ...[
             //
-            const SizedBox(
-              height: 10,
+            if (screen_loader == '1') ...[
+              const CircularProgressIndicator()
+            ] else if (screen_loader == '2') ...[
+              textWithRegularStyle(
+                //
+                screen_message_alert_message,
+                Colors.black,
+                14.0,
+              ),
+            ] else ...[
+              friends_UI(),
+            ]
+          ] else if (str_user_select_which_profile == '2') ...[
+            //
+            if (screen_loader == '1') ...[
+              const CircularProgressIndicator()
+            ] else if (screen_loader == '2') ...[
+              const SizedBox(
+                height: 150.0,
+              ),
+              Center(
+                child: textWithRegularStyle(
+                  //
+                  screen_message_alert_message,
+                  Colors.black,
+                  14.0,
+                ),
+              ),
+            ] else ...[
+              new_request_UI(),
+            ]
+          ] else if (str_user_select_which_profile == '3') ...[
+            //
+            if (screen_loader == '1') ...[
+              const CircularProgressIndicator()
+            ] else if (screen_loader == '2') ...[
+              const SizedBox(
+                height: 150.0,
+              ),
+              Center(
+                child: textWithRegularStyle(
+                  //
+                  screen_message_alert_message,
+                  Colors.black,
+                  14.0,
+                ),
+              ),
+            ] else ...[
+              request_sent_UI(),
+            ]
+          ]
+        ],
+      ),
+    );
+  }
+
+  ListView friends_UI() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: arrSearchFriend.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: (strLoginUserId.toString() ==
+                  arrSearchFriend[index]['userId'].toString())
+              ? textWithBoldStyle(
+                  arrSearchFriend[index]['FirstfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                )
+              : textWithBoldStyle(
+                  arrSearchFriend[index]['SecondfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                ),
+          subtitle: textWithRegularStyle(
+            //
+            (strLoginUserId.toString() ==
+                    arrSearchFriend[index]['userId'].toString())
+                ? arrSearchFriend[index]['Firstemail'].toString()
+                : arrSearchFriend[index]['Secondemail'].toString(),
+            Colors.black,
+            12.0,
+          ),
+          leading: SizedBox(
+            height: 40,
+            width: 40,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+              child: (strLoginUserId.toString() ==
+                      arrSearchFriend[index]['userId'].toString())
+                  ? (arrSearchFriend[index]['FirstSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['FirstUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['FirstUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            )
+                  : (arrSearchFriend[index]['SecondSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['SecondUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['SecondUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 300,
-                child: CupertinoSegmentedControl<int>(
-                  selectedColor: navigationColor,
-                  borderColor: Colors.white,
-                  children: const {
-                    0: Text('Friends'),
-                    1: Text('Requests'),
-                    // 2: Text('Prefer not to say'),
-                  },
-                  onValueChanged: (int val) {
-                    setState(() {
-                      if (kDebugMode) {
-                        print(val);
-                      }
-                      strFriendLoader = '0';
-                      segmentedControlValue = val;
-                    });
-                    //
-                    if (segmentedControlValue == 0) {
-                      // HIT WEBSERVICE TO SEARCH FRIEND
-                      friendApiCall
-                          .friendsWB(
-                            strLoginUserId.toString(),
-                            '2',
-                          )
-                          .then((value) => {
-                                setState(() {
-                                  arrSearchFriend = value;
-                                  strFriendLoader = '1';
-                                })
-                              });
-                    } else {
-                      friendApiCall
-                          .friendsWB(
-                            strLoginUserId.toString(),
-                            '1',
-                          )
-                          .then((value) => {
-                                setState(() {
-                                  arrSearchFriend = value;
-                                  strFriendLoader = '1';
-                                })
-                              });
-                    }
-                  },
-                  groupValue: segmentedControlValue,
+          ),
+          trailing: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+              color: navigationColor,
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+            ),
+            child: Center(
+              child: textWithRegularStyle(
+                'Friends',
+                Colors.white,
+                12.0,
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyProfileScreen(
+                  strUserId: arrSearchFriend[index]['userId'].toString(),
+                ),
+              ),
+            );
+            // openFriendsSettingPOPUP(
+            //   context,
+            //   ,
+            // );
+            /**/
+          },
+        );
+      },
+    );
+  }
+
+  Container tabs_UI(BuildContext context) {
+    return Container(
+      height: 60,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.redAccent,
+      child: Row(
+        children: [
+          //
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                //
+                setState(() {
+                  str_user_select_which_profile = '1';
+                });
+                //
+
+                func_call_api(
+                  strLoginUserId,
+                  '2',
+                  '0',
+                );
+              },
+              child: Container(
+                height: 60,
+                color: Colors.transparent,
+                child: Center(
+                  child: (str_user_select_which_profile == '1')
+                      ? textWithBoldStyle(
+                          'Friends',
+                          Colors.white,
+                          16.0,
+                        )
+                      : textWithRegularStyle(
+                          'Friends',
+                          Colors.white,
+                          12.0,
+                        ),
                 ),
               ),
             ),
-            //
-            (strFriendLoader == '0')
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : (arrSearchFriend.isEmpty)
-                    ? Align(
-                        alignment: Alignment.center,
-                        child: textWithRegularStyle(
-                          'No data found',
-                          Colors.black,
-                          14.0,
+          ),
+          //
+          Container(
+            height: 40,
+            width: 0.4,
+            color: Colors.black,
+          ),
+          //
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                //
+                arrSearchFriend.clear();
+                setState(() {
+                  str_user_select_which_profile = '2';
+                });
+                //
+                func_call_api(
+                  strLoginUserId,
+                  '1',
+                  '2',
+                );
+              },
+              child: Container(
+                height: 60,
+                color: Colors.transparent,
+                child: Center(
+                  child: (str_user_select_which_profile == '2')
+                      ? textWithBoldStyle(
+                          'New Request',
+                          Colors.white,
+                          16.0,
+                        )
+                      : textWithRegularStyle(
+                          'New Request',
+                          Colors.white,
+                          12.0,
                         ),
-                      )
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            //
-                            ListView.separated(
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                              // scrollDirection: Axis.vertical,
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: arrSearchFriend.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  leading: (strLoginUserId ==
-                                          arrSearchFriend[index]['userId']
-                                              .toString())
-                                      ? (arrSearchFriend[index]['status']
-                                                  .toString() ==
-                                              '2')
-                                          ? (arrSearchFriend[index][
-                                                          'FirstSettingProfilePicture']
-                                                      .toString() ==
-                                                  '3')
-                                              ? placeholderImageUI()
-                                              : (arrSearchFriend[index]
-                                                              ['FirstUserimage']
-                                                          .toString() ==
-                                                      '')
-                                                  ? placeholderImageUI()
-                                                  : realFirstUserImageUI(index)
-
-                                          ///
-                                          : (arrSearchFriend[index]['status']
-                                                      .toString() ==
-                                                  '1') // not a friend
-                                              ? (arrSearchFriend[index][
-                                                              'FirstSettingProfilePicture']
-                                                          .toString() ==
-                                                      '1') // everyone show image without being fridn
-                                                  ? realFirstUserImageUI(index)
-                                                  : placeholderImageUI()
-                                              : Text('data 2')
-
-                                      /*(arrSearchFriend[index]['FirstUserimage']
-                                              .toString() ==
-                                          '')
-                                      ? placeholderImageUI()
-                                      : realFirstUserImageUI(index)*/
-
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      : (arrSearchFriend[index]
-                                                      ['SecondUserimage']
-                                                  .toString() ==
-                                              '')
-                                          ? placeholderImageUI()
-                                          : realSecondImageUserUI(index),
-                                  title: (strLoginUserId ==
-                                          arrSearchFriend[index]['userId']
-                                              .toString())
-                                      ? textWithBoldStyle(
-                                          //
-                                          arrSearchFriend[index]
-                                                  ['FirstfullName']
-                                              .toString(),
-                                          // '12',
-                                          //
-                                          Colors.black,
-                                          16.0,
-                                        )
-                                      : textWithBoldStyle(
-                                          //
-                                          arrSearchFriend[index]
-                                                  ['SecondfullName']
-                                              .toString(),
-                                          // '12',
-                                          //
-                                          Colors.black,
-                                          16.0,
-                                        ),
-                                  subtitle: (strLoginUserId ==
-                                          arrSearchFriend[index]['userId']
-                                              .toString())
-                                      ? textWithRegularStyle(
-                                          //
-                                          arrSearchFriend[index]['Firstemail']
-                                              .toString(),
-                                          // '12',
-                                          Colors.blueGrey,
-                                          14.0,
-                                        )
-                                      : textWithRegularStyle(
-                                          //
-                                          arrSearchFriend[index]['Secondemail']
-                                              .toString(),
-                                          // '12',
-                                          Colors.blueGrey,
-                                          14.0,
-                                        ),
-                                  trailing: InkWell(
-                                    onTap: () {
-                                      //
-                                      (strLoginUserId ==
-                                              arrSearchFriend[index]['userId']
-                                                  .toString())
-                                          ? Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserProfileNewScreen(
-                                                  strUserId:
-                                                      arrSearchFriend[index]
-                                                              ['profileId']
-                                                          .toString(),
-                                                  strGetPostUserId:
-                                                      arrSearchFriend[index]
-                                                              ['profileId']
-                                                          .toString(),
-                                                ),
-                                              ),
-                                            )
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserProfileNewScreen(
-                                                  strUserId:
-                                                      arrSearchFriend[index]
-                                                              ['userId']
-                                                          .toString(),
-                                                  strGetPostUserId:
-                                                      arrSearchFriend[index]
-                                                              ['userId']
-                                                          .toString(),
-                                                ),
-                                              ),
-                                            );
-
-                                      /*Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyProfileScreen(
-                                                  strUserId:
-                                                      arrSearchFriend[index]
-                                                              ['profileId']
-                                                          .toString(),
-                                                ),
-                                              ),
-                                            )
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyProfileScreen(
-                                                  strUserId:
-                                                      arrSearchFriend[index]
-                                                              ['userId']
-                                                          .toString(),
-                                                ),
-                                              ),
-                                            );*/
-                                      //
-                                    },
-                                    child: (arrSearchFriend[index]['status']
-                                                .toString() ==
-                                            '1')
-                                        ? (arrSearchFriend[index]['profileId']
-                                                    .toString() ==
-                                                strLoginUserId.toString())
-                                            ? Container(
-                                                margin:
-                                                    const EdgeInsets.all(10.0),
-                                                width: 120,
-                                                height: 48.0,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20,
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: textWithBoldStyle(
-                                                    'new request',
-                                                    Colors.white,
-                                                    14.0,
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(
-                                                margin:
-                                                    const EdgeInsets.all(10.0),
-                                                width: 100,
-                                                height: 48.0,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20,
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: textWithBoldStyle(
-                                                    'sent',
-                                                    Colors.white,
-                                                    16.0,
-                                                  ),
-                                                ),
-                                              )
-                                        : Container(
-                                            margin: const EdgeInsets.all(10.0),
-                                            width: 100,
-                                            height: 48.0,
-                                            decoration: BoxDecoration(
-                                              color: navigationColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                20,
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: textWithBoldStyle(
-                                                'View',
-                                                Colors.white,
-                                                16.0,
-                                              ),
-                                            ),
-                                          ),
-                                  ),
-                                );
-                              },
-                            ),
-                            //
-                          ],
+                ),
+              ),
+            ),
+          ),
+          //
+          Container(
+            height: 40,
+            width: 0.4,
+            color: Colors.black,
+          ),
+          //
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                //
+                arrSearchFriend.clear();
+                setState(() {
+                  str_user_select_which_profile = '3';
+                });
+                //
+                func_call_api(
+                  strLoginUserId,
+                  '1',
+                  '1',
+                );
+              },
+              child: Container(
+                height: 60,
+                color: Colors.transparent,
+                child: Center(
+                  child: (str_user_select_which_profile == '3')
+                      ? textWithBoldStyle(
+                          'Request Sent',
+                          Colors.white,
+                          16.0,
+                        )
+                      : textWithRegularStyle(
+                          'Request Sent',
+                          Colors.white,
+                          12.0,
                         ),
-                      ),
-          ],
-        ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  ListView request_sent_UI() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: arrSearchFriend.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: (strLoginUserId.toString() ==
+                  arrSearchFriend[index]['userId'].toString())
+              ? textWithBoldStyle(
+                  arrSearchFriend[index]['FirstfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                )
+              : textWithBoldStyle(
+                  arrSearchFriend[index]['SecondfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                ),
+          subtitle: textWithRegularStyle(
+            //
+            (strLoginUserId.toString() ==
+                    arrSearchFriend[index]['userId'].toString())
+                ? arrSearchFriend[index]['Firstemail'].toString()
+                : arrSearchFriend[index]['Secondemail'].toString(),
+            Colors.black,
+            12.0,
+          ),
+          leading: SizedBox(
+            height: 40,
+            width: 40,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+              child: (strLoginUserId.toString() ==
+                      arrSearchFriend[index]['userId'].toString())
+                  ? (arrSearchFriend[index]['FirstSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['FirstUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['FirstUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            )
+                  : (arrSearchFriend[index]['SecondSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['SecondUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['SecondUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            ),
+            ),
+          ),
+          trailing: Container(
+            height: 40,
+            width: 110,
+            decoration: BoxDecoration(
+              color: navigationColor,
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+            ),
+            child: Center(
+              child: textWithRegularStyle(
+                'Request sent',
+                Colors.white,
+                12.0,
+              ),
+            ),
+          ),
+          onTap: () {
+            /*Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileNewScreen(
+                        strUserId:
+                            arrSearchFriend[index]['userId'].toString(),
+                        strGetPostUserId:
+                            arrSearchFriend[index]['profileId'].toString(),
+                      ),
+                    ),
+                  );*/
+            //
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyProfileScreen(
+                  strUserId: arrSearchFriend[index]['profileId'].toString(),
+                ),
+              ),
+            );
+            //
+          },
+        );
+      },
+    );
+  }
+
+  ListView new_request_UI() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: arrSearchFriend.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: (strLoginUserId.toString() ==
+                  arrSearchFriend[index]['userId'].toString())
+              ? textWithBoldStyle(
+                  arrSearchFriend[index]['FirstfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                )
+              : textWithBoldStyle(
+                  arrSearchFriend[index]['SecondfullName'].toString(),
+                  Colors.black,
+                  14.0,
+                ),
+          subtitle: textWithRegularStyle(
+            //
+            (strLoginUserId.toString() ==
+                    arrSearchFriend[index]['userId'].toString())
+                ? arrSearchFriend[index]['Firstemail'].toString()
+                : arrSearchFriend[index]['Secondemail'].toString(),
+            Colors.black,
+            12.0,
+          ),
+          leading: SizedBox(
+            height: 40,
+            width: 40,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+              child: (strLoginUserId.toString() ==
+                      arrSearchFriend[index]['userId'].toString())
+                  ? (arrSearchFriend[index]['FirstSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['FirstUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['FirstUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            )
+                  : (arrSearchFriend[index]['SecondSettingProfilePicture']
+                              .toString() !=
+                          '1')
+                      ? Image.asset(
+                          'assets/images/1024.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (arrSearchFriend[index]['SecondUserimage'].toString() ==
+                              '')
+                          ? Image.asset(
+                              'assets/images/1024.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              arrSearchFriend[index]['SecondUserimage']
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            ),
+            ),
+          ),
+          trailing: Container(
+            height: 40,
+            width: 100,
+            decoration: BoxDecoration(
+              color: navigationColor,
+              borderRadius: BorderRadius.circular(
+                12.0,
+              ),
+            ),
+            child: Center(
+              child: textWithRegularStyle(
+                'New Request',
+                Colors.white,
+                12.0,
+              ),
+            ),
+          ),
+          onTap: () {
+            openFriendsSettingPOPUP(
+              context,
+              arrSearchFriend[index]['userId'].toString(),
+            );
+            /**/
+          },
+        );
+      },
     );
   }
 
@@ -534,5 +777,198 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
         ),
       ),
     );
+  }
+
+  //
+  //
+  void openFriendsSettingPOPUP(BuildContext context, parse_id) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: const Text('Friends'),
+        // message: const Text(''),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () async {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyProfileScreen(
+                    strUserId: parse_id.toString(),
+                  ),
+                ),
+              );
+            },
+            child: textWithRegularStyle(
+              'View profile',
+              Colors.black,
+              14.0,
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () async {
+              Navigator.pop(context);
+              //
+              accept_WB(parse_id);
+            },
+            child: textWithRegularStyle(
+              'Accept request',
+              Colors.black,
+              14.0,
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () async {
+              Navigator.pop(context);
+              //
+              blockUserWB(parse_id);
+            },
+            child: textWithRegularStyle(
+              'Decline request',
+              Colors.black,
+              14.0,
+            ),
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: textWithRegularStyle(
+              'Dismiss',
+              Colors.red,
+              16.0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //
+  // upload feeds data to time line
+  blockUserWB(
+    strGetFriendIdIs,
+  ) async {
+    //
+    print(strGetFriendIdIs);
+    showLoadingUI(context, 'please wait...');
+
+    //
+    if (kDebugMode) {
+      print('=====> POST : UPLOAD ONLY TEXT ');
+    }
+
+    final resposne = await http.post(
+      Uri.parse(
+        applicationBaseURL,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'action': 'frienddecline',
+          'userId': strLoginUserId.toString(),
+          'profileId': strGetFriendIdIs.toString(),
+        },
+      ),
+    );
+
+    // convert data to dict
+    var getData = jsonDecode(resposne.body);
+    if (kDebugMode) {
+      print(getData);
+    }
+
+    if (resposne.statusCode == 200) {
+      if (getData['status'].toString().toLowerCase() == 'success') {
+        //
+        Navigator.pop(context);
+        arrSearchFriend.clear();
+        setState(() {
+          str_user_select_which_profile = '2';
+        });
+        //
+        func_call_api(
+          strLoginUserId,
+          '1',
+          '2',
+        );
+        //
+      } else {
+        if (kDebugMode) {
+          print(
+            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
+          );
+        }
+      }
+    } else {
+      // return postList;
+    }
+  }
+
+  // upload feeds data to time line
+  accept_WB(
+    strGetFriendIdIs,
+  ) async {
+    //
+    print(strGetFriendIdIs);
+    showLoadingUI(context, 'please wait...');
+
+    //
+    if (kDebugMode) {
+      print('=====> POST : ACCEPT REQUEST');
+    }
+
+    final resposne = await http.post(
+      Uri.parse(
+        applicationBaseURL,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'action': 'sendacceptfriend',
+          'userId': strLoginUserId.toString(),
+          'profileId': strGetFriendIdIs.toString(),
+          'status': '2',
+        },
+      ),
+    );
+
+    // convert data to dict
+    var getData = jsonDecode(resposne.body);
+    if (kDebugMode) {
+      print(getData);
+    }
+
+    if (resposne.statusCode == 200) {
+      if (getData['status'].toString().toLowerCase() == 'success') {
+        //
+        Navigator.pop(context);
+        arrSearchFriend.clear();
+        setState(() {
+          str_user_select_which_profile = '2';
+        });
+        //
+        func_call_api(
+          strLoginUserId,
+          '1',
+          '2',
+        );
+        //
+      } else {
+        if (kDebugMode) {
+          print(
+            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
+          );
+        }
+      }
+    } else {
+      // return postList;
+    }
   }
 }

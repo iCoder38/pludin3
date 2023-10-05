@@ -263,7 +263,7 @@ class _ProfileVideosScreenState extends State<ProfileVideosScreen> {
               ),
               image: const DecorationImage(
                 image: AssetImage(
-                  'assets/images/2.jpg',
+                  'assets/images/logo.png',
                   // fit: BoxFit.fitWidth,
                 ),
                 fit: BoxFit.fitWidth,

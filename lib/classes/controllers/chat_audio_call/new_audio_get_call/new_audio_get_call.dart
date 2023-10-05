@@ -156,13 +156,15 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
               //
               strOtherUserName = element.data()['name'].toString();
               strOtherUserImage = element.data()['image'].toString();
+              /*if (!mounted) return;
               setState(() {
                 localCallStatus = '2';
               });
               //
-              join();
+              join();*/
               //
               //
+              setState(() {});
             }
           }
         });
@@ -369,6 +371,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
                   GestureDetector(
                     onTap: () {
                       //
+                      if (!mounted) return;
                       setState(() {
                         localCallStatus = '3';
                       });
@@ -428,6 +431,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
             GestureDetector(
               onTap: () {
                 //
+                if (!mounted) return;
                 setState(() {
                   localCallStatus = '2';
                 });
@@ -467,7 +471,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
                 ),
               ),
             ),
-            /*//
+            //
             const SizedBox(
               width: 10,
             ),
@@ -479,7 +483,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
                   localCallStatus = '3';
                 });
                 //
-                join();
+                // join();
 
                 //
                 // funcGetDeviceTokenFromXMPP();
@@ -513,7 +517,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
                   ),
                 ),
               ),
-            ),*/
+            ),
           ],
         ),
       ),
@@ -624,6 +628,7 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
   // LEAVE
   void leave() {
     // dispose();
+    if (!mounted) return;
     setState(() {
       _isJoined = false;
       _remoteUid = null;
