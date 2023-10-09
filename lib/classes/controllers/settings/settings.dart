@@ -142,7 +142,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           image: DecorationImage(
                             image: AssetImage(
-                              'assets/images/1.jpg',
+                              'assets/images/logo.png',
                             ),
                             fit: BoxFit.cover,
                             opacity: 0.4,

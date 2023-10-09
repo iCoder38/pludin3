@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pludin/classes/controllers/profile/my_profile.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -118,6 +119,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   }
 
   funcCreateCustomFriendListWB() {
+    print('REAL DATA');
+    print(arrSearchFriend);
     for (int i = 0; i < arrSearchFriend.length; i++) {
       var customDict = {
         'userId': arrSearchFriend[i]['userId'].toString(),
@@ -126,6 +129,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         'SecondUserimage': arrSearchFriend[i]['SecondUserimage'].toString(),
         'FirstfullName': arrSearchFriend[i]['FirstfullName'].toString(),
         'SecondfullName': arrSearchFriend[i]['SecondfullName'].toString(),
+        'Firstemail': arrSearchFriend[i]['Firstemail'].toString(),
+        'Secondemail': arrSearchFriend[i]['Secondemail'].toString(),
         'friendFirebaseId':
             (strLoginUserId == arrSearchFriend[i]['userId'].toString())
                 ? arrSearchFriend[i]['FirstFirebaseId'].toString()
@@ -407,8 +412,310 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   const SizedBox(
                     height: 6,
                   ),
+
+                  /*ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: arrFriends.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: (strLoginUserId.toString() ==
+                                arrFriends[index]['userId'].toString())
+                            ? textWithBoldStyle(
+                                arrFriends[index]['FirstfullName'].toString(),
+                                Colors.black,
+                                14.0,
+                              )
+                            : textWithBoldStyle(
+                                arrFriends[index]['SecondfullName'].toString(),
+                                Colors.black,
+                                14.0,
+                              ),
+                        subtitle: textWithRegularStyle(
+                          //
+                          (strLoginUserId.toString() ==
+                                  arrFriends[index]['userId'].toString())
+                              ? arrFriends[index]['Firstemail'].toString()
+                              : arrFriends[index]['Secondemail'].toString(),
+                          Colors.black,
+                          12.0,
+                        ),
+                        leading: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              12.0,
+                            ),
+                            child: (strLoginUserId.toString() ==
+                                    arrFriends[index]['userId'].toString())
+                                ? (arrFriends[index]
+                                                ['FirstSettingProfilePicture']
+                                            .toString() !=
+                                        '1')
+                                    ? Image.asset(
+                                        'assets/images/1024.png',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : (arrFriends[index]['FirstUserimage']
+                                                .toString() ==
+                                            '')
+                                        ? Image.asset(
+                                            'assets/images/1024.png',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            arrFriends[index]['FirstUserimage']
+                                                .toString(),
+                                            fit: BoxFit.cover,
+                                          )
+                                : (arrFriends[index]
+                                                ['SecondSettingProfilePicture']
+                                            .toString() !=
+                                        '1')
+                                    ? Image.asset(
+                                        'assets/images/1024.png',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : (arrFriends[index]['SecondUserimage']
+                                                .toString() ==
+                                            '')
+                                        ? Image.asset(
+                                            'assets/images/1024.png',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            arrFriends[index]['SecondUserimage']
+                                                .toString(),
+                                            fit: BoxFit.cover,
+                                          ),
+                          ),
+                        ),
+                        trailing: Container(
+                          height: 40,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: navigationColor,
+                            borderRadius: BorderRadius.circular(
+                              12.0,
+                            ),
+                          ),
+                          child: Center(
+                            child: textWithRegularStyle(
+                              'Friends',
+                              Colors.white,
+                              12.0,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyProfileScreen(
+                                strUserId:
+                                    arrFriends[index]['userId'].toString(),
+                              ),
+                            ),
+                          );*/
+                           
+                        },
+                      );
+                    },
+                  )*/
                   for (int i = 0; i < arrFriends.length; i++) ...[
-                    Container(
+                    ListTile(
+                      title: (strLoginUserId.toString() ==
+                              arrFriends[i]['userId'].toString())
+                          ? Align(
+                              alignment: Alignment.bottomLeft,
+                              child: textWithBoldStyle(
+                                arrFriends[i]['FirstfullName'].toString(),
+                                Colors.black,
+                                14.0,
+                              ),
+                            )
+                          : textWithBoldStyle(
+                              arrFriends[i]['SecondfullName'].toString(),
+                              Colors.black,
+                              14.0,
+                            ),
+                      subtitle: textWithRegularStyle(
+                        //
+                        (strLoginUserId.toString() ==
+                                arrFriends[i]['userId'].toString())
+                            ? arrFriends[i]['Firstemail'].toString()
+                            : arrFriends[i]['Secondemail'].toString(),
+                        Colors.black,
+                        12.0,
+                      ),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          20.0,
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: (strLoginUserId ==
+                                  arrFriends[i]['userId'].toString())
+                              ? (arrFriends[i]['FirstUserimage'].toString() ==
+                                      '')
+                                  ? Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          246,
+                                          248,
+                                          253,
+                                          1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                            'assets/icons/avatar.png',
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          246,
+                                          248,
+                                          253,
+                                          1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                        child: Image.network(
+                                          //
+                                          arrFriends[i]['FirstUserimage']
+                                              .toString(),
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                          //
+                                        ),
+                                      ),
+                                    )
+                              : (arrFriends[i]['SecondUserimage'].toString() ==
+                                      '')
+                                  ? Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          246,
+                                          248,
+                                          253,
+                                          1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                            'assets/icons/avatar.png',
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          246,
+                                          248,
+                                          253,
+                                          1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
+                                        child: Image.network(
+                                          //
+                                          arrFriends[i]['SecondUserimage']
+                                              .toString(),
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                          //
+                                        ),
+                                      ),
+                                    ),
+                        ),
+                      ),
+                      trailing: InkWell(
+                        onTap: () {
+                          //
+                          funcAdOrRemoveFriends(i);
+                          //
+                        },
+                        child: (arrFriends[i]['status'].toString() == 'no')
+                            ? Container(
+                                margin: const EdgeInsets.only(
+                                  right: 10.0,
+                                ),
+                                height: 36,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(
+                                    18.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: textWithRegularStyle(
+                                    'Add',
+                                    Colors.black,
+                                    14.0,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: const EdgeInsets.only(
+                                  right: 10.0,
+                                ),
+                                height: 36,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(
+                                    18.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: textWithRegularStyle(
+                                    'Remove',
+                                    Colors.white,
+                                    12.0,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    )
+                    /*Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width,
                       color: const Color.fromRGBO(
@@ -419,7 +726,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                       ),
                       child: Row(
                         children: [
-                          ClipRRect(
+                          /*ClipRRect(
                             borderRadius: BorderRadius.circular(
                               20.0,
                             ),
@@ -541,21 +848,33 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                           ),
                           //
                           Expanded(
-                            child: (strLoginUserId ==
-                                    arrFriends[i]['userId'].toString())
-                                ? textWithRegularStyle(
-                                    ' ${arrFriends[i]['FirstfullName']}',
-                                    Colors.black,
-                                    14.0,
-                                  )
-                                : textWithRegularStyle(
-                                    ' ${arrFriends[i]['FirstfullName']}',
-                                    Colors.black,
-                                    14.0,
-                                  ),
-                          ),
-                          //
-                          InkWell(
+                            child: Column(
+                              children: [
+                                (strLoginUserId.toString() ==
+                                        arrFriends[i]['userId'].toString())
+                                    ? Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: textWithBoldStyle(
+                                          arrFriends[i]['FirstfullName']
+                                              .toString(),
+                                          Colors.black,
+                                          14.0,
+                                        ),
+                                      )
+                                    : textWithBoldStyle(
+                                        arrFriends[i]['SecondfullName']
+                                            .toString(),
+                                        Colors.black,
+                                        14.0,
+                                      ),
+                              ],
+                            ),
+                          ),*/
+                          /*
+                          
+                         */
+                          // real data
+                          /*InkWell(
                             onTap: () {
                               //
                               funcAdOrRemoveFriends(i);
@@ -602,11 +921,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                       ),
                                     ),
                                   ),
-                          ),
+                          ),*/
                           //
                         ],
                       ),
-                    ),
+                    ),*/
                   ]
                 ],
               ),
@@ -789,6 +1108,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         'SecondUserimage': arrSearchFriend[i]['SecondUserimage'].toString(),
         'FirstfullName': arrSearchFriend[i]['FirstfullName'].toString(),
         'SecondfullName': arrSearchFriend[i]['SecondfullName'].toString(),
+        'Firstemail': arrSearchFriend[i]['Firstemail'].toString(),
+        'Secondemail': arrSearchFriend[i]['Secondemail'].toString(),
         'friendFirebaseId':
             (strLoginUserId == arrSearchFriend[i]['userId'].toString())
                 ? arrSearchFriend[i]['FirstFirebaseId'].toString()
@@ -807,6 +1128,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         'SecondUserimage': arrSearchFriend[i]['SecondUserimage'].toString(),
         'FirstfullName': arrSearchFriend[i]['FirstfullName'].toString(),
         'SecondfullName': arrSearchFriend[i]['SecondfullName'].toString(),
+        'Firstemail': arrSearchFriend[i]['Firstemail'].toString(),
+        'Secondemail': arrSearchFriend[i]['Secondemail'].toString(),
         'friendFirebaseId':
             (strLoginUserId == arrSearchFriend[i]['userId'].toString())
                 ? arrSearchFriend[i]['FirstFirebaseId'].toString()

@@ -365,8 +365,6 @@ class _GroupFriendsListScreenState extends State<GroupFriendsListScreen> {
         }
         //
         //
-        // Navigator.pop(context);
-        //
       } else {
         for (var element in value.docs) {
           if (kDebugMode) {

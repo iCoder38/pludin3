@@ -336,19 +336,39 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
             ),
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyProfileScreen(
-                  strUserId: arrSearchFriend[index]['userId'].toString(),
-                ),
-              ),
-            );
-            // openFriendsSettingPOPUP(
+            print('====> USER CLICKED FRIENDS <=====');
+            print(arrSearchFriend[index]);
+            (strLoginUserId.toString() ==
+                    arrSearchFriend[index]['userId'].toString())
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileNewScreen(
+                        strUserId: arrSearchFriend[index]['userId'].toString(),
+                        strGetPostUserId:
+                            arrSearchFriend[index]['profileId'].toString(),
+                      ),
+                    ),
+                  )
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileNewScreen(
+                        strUserId:
+                            arrSearchFriend[index]['profileId'].toString(),
+                        strGetPostUserId:
+                            arrSearchFriend[index]['userId'].toString(),
+                      ),
+                    ),
+                  );
+            // Navigator.push(
             //   context,
-            //   ,
+            //   MaterialPageRoute(
+            //     builder: (context) => MyProfileScreen(
+            //       strUserId: arrSearchFriend[index]['userId'].toString(),
+            //     ),
+            //   ),
             // );
-            /**/
           },
         );
       },
@@ -576,26 +596,38 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
             ),
           ),
           onTap: () {
-            /*Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserProfileNewScreen(
-                        strUserId:
-                            arrSearchFriend[index]['userId'].toString(),
-                        strGetPostUserId:
-                            arrSearchFriend[index]['profileId'].toString(),
-                      ),
-                    ),
-                  );*/
             //
-            Navigator.push(
+            /*Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => MyProfileScreen(
                   strUserId: arrSearchFriend[index]['profileId'].toString(),
                 ),
               ),
-            );
+            );*/
+            (strLoginUserId.toString() ==
+                    arrSearchFriend[index]['userId'].toString())
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileNewScreen(
+                        strUserId: arrSearchFriend[index]['userId'].toString(),
+                        strGetPostUserId:
+                            arrSearchFriend[index]['profileId'].toString(),
+                      ),
+                    ),
+                  )
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileNewScreen(
+                        strUserId:
+                            arrSearchFriend[index]['profileId'].toString(),
+                        strGetPostUserId:
+                            arrSearchFriend[index]['userId'].toString(),
+                      ),
+                    ),
+                  );
             //
           },
         );
@@ -697,7 +729,7 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
           onTap: () {
             openFriendsSettingPOPUP(
               context,
-              arrSearchFriend[index]['userId'].toString(),
+              arrSearchFriend[index],
             );
             /**/
           },
@@ -781,7 +813,7 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
 
   //
   //
-  void openFriendsSettingPOPUP(BuildContext context, parse_id) {
+  void openFriendsSettingPOPUP(BuildContext context, data) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -791,14 +823,26 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
           CupertinoActionSheetAction(
             onPressed: () async {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyProfileScreen(
-                    strUserId: parse_id.toString(),
-                  ),
-                ),
-              );
+              print(data);
+              (strLoginUserId.toString() == data['userId'].toString())
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserProfileNewScreen(
+                          strUserId: data['userId'].toString(),
+                          strGetPostUserId: data['profileId'].toString(),
+                        ),
+                      ),
+                    )
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserProfileNewScreen(
+                          strUserId: data['profileId'].toString(),
+                          strGetPostUserId: data['userId'].toString(),
+                        ),
+                      ),
+                    );
             },
             child: textWithRegularStyle(
               'View profile',
@@ -810,7 +854,11 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
             onPressed: () async {
               Navigator.pop(context);
               //
-              accept_WB(parse_id);
+              print(data);
+              (strLoginUserId.toString() == data['userId'].toString())
+                  ? accept_WB(data['profileId'].toString())
+                  : accept_WB(data['userId'].toString());
+              //
             },
             child: textWithRegularStyle(
               'Accept request',
@@ -822,7 +870,10 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
             onPressed: () async {
               Navigator.pop(context);
               //
-              blockUserWB(parse_id);
+              print(data);
+              (strLoginUserId.toString() == data['userId'].toString())
+                  ? accept_WB(data['profileId'].toString())
+                  : accept_WB(data['userId'].toString());
             },
             child: textWithRegularStyle(
               'Decline request',

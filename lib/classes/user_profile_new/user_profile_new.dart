@@ -141,6 +141,13 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
     handler = DataBase();
 
     //
+
+    if (kDebugMode) {
+      print('=====================> IDs <====================================');
+      print('Login User Id ====> ${widget.strUserId}');
+      print('Friend Id ========> ${widget.strGetPostUserId}');
+      print('================================================================');
+    }
     funcGetLocalDBdata();
 
     //
@@ -175,18 +182,6 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
                   {
                     //
                     strLoginUserId = value[i].userId.toString(),
-                    if (kDebugMode)
-                      {
-                        // print('=================================='),
-                        // print('=================================='),
-                        // print(widget.strUserId),
-                        // print(widget.strGetPostUserId),
-                        // print(strLoginUserId),
-                        // print('=================================='),
-                        // print('=================================='),
-                      }
-
-                    //
                   },
                 //
                 funcGetFriendsProfileData(),
@@ -203,7 +198,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
     //
     userProfileApiCall
         .userProfileWB(
-          widget.strUserId.toString(),
+          widget.strGetPostUserId.toString(),
           strLoginUserId.toString(),
         )
         .then((value) => {
@@ -255,7 +250,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
           'action': 'home',
           'userId': strLoginUserId.toString(),
           'otherId': widget.strGetPostUserId.toString(),
-          'type': 'Other',
+          // 'type': 'Other',
           'pageNo': pageNumber
         },
       ),
@@ -744,6 +739,35 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
           icon: const Icon(Icons.arrow_back),
         ),
         backgroundColor: navigationColor,
+        actions: [
+          IconButton.filled(
+            onPressed: () {
+              //
+              QuickAlert.show(
+                context: context,
+                barrierColor: Colors.blueGrey,
+                type: QuickAlertType.confirm,
+                text: 'Do you want to block this user ?',
+                confirmBtnText: 'Yes',
+                cancelBtnText: 'No',
+                confirmBtnColor: Colors.green,
+                onConfirmBtnTap: () {
+                  if (kDebugMode) {
+                    print('some click');
+                  }
+                  //
+                  // print(widget.strGetPostUserId);
+                  blockUserWB(widget.strGetPostUserId.toString());
+                  //
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.block,
+              color: Colors.red,
+            ),
+          ),
+        ],
       ),
       body: (strShowHideUI == '0')
           ? Center(
@@ -1519,7 +1543,7 @@ class _UserProfileNewScreenState extends State<UserProfileNewScreen> {
             ),
             //
 
-            if (widget.strUserId == strLoginUserId) ...[
+            if (widget.strGetPostUserId == strLoginUserId) ...[
               //
 
               //

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:pludin/classes/controllers/custom_app_bar/custom_app_bar.dart';
@@ -23,7 +25,7 @@ class SearchFriendsScreen extends StatefulWidget {
 class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
   //
   var strSearchFriendloader = '';
-  var strProfile = '2';
+  var strProfile = '1';
   //
   final formKey = GlobalKey<FormState>();
   late final TextEditingController contGrindName;
@@ -35,6 +37,8 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
   var arrSearchFriend = [];
   //
   final friendApiCall = FriendModal();
+  //
+  var str_message_alert = '1';
   //
   @override
   void initState() {
@@ -81,7 +85,8 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
                     //
                   },
                 //
-                friendApiCall
+                strProfile = '1',
+                /*friendApiCall
                     .friendsWB(
                       strLoginUserId.toString(),
                       '1',
@@ -91,7 +96,7 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
                             arrSearchFriend = value;
                             strProfile = '1';
                           })
-                        }),
+                        }),*/
                 //
               });
         }
@@ -443,7 +448,21 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
           height: 20,
         ),
         //
-        ListView.separated(
+        const SizedBox(
+          height: 200,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Center(
+            child: textWithRegularStyle(
+              'Search for friend or someone whom you want to be a friend',
+              Colors.black,
+              14.0,
+            ),
+          ),
+        )
+
+        /*ListView.separated(
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
           // scrollDirection: Axis.vertical,
@@ -906,7 +925,7 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
                     color: Colors.amber,
                   );
           },
-        ),
+        ),*/
         //
       ],
     );

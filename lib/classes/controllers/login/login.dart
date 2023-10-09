@@ -43,6 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
     contEmail = TextEditingController();
     contPassword = TextEditingController();
 
+    /*FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }*/
     // handler.deletePlanet(1);
     // handler.deletePlanet(2);
     // if (value.isEmpty) {
