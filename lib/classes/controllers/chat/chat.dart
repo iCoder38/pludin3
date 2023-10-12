@@ -1,5 +1,10 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:math';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +22,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pludin/classes/chat_video_call/video_call.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_audio_call.dart';
 import 'package:pludin/classes/controllers/zego_audio/zego_audio.dart';
+import 'package:pludin/classes/controllers/zego_video/zego_video.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../header/utils.dart';
 import '../database/database_helper.dart';
@@ -52,11 +59,14 @@ class _ChatScreenState extends State<ChatScreen> {
   //
   var strLoginUserName = '';
   var strLoginUserImage = '';
+  var strFirebaseId = '';
   //
   var strReceiverId = '';
   var strReceiverName = '';
   var strReceiverImage = '';
   var strReceiverFirebaseId = '';
+  //
+  var uuid = const Uuid().v4();
   //
   var strNavigationTitle = '';
   //
@@ -154,6 +164,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   {
                     strLoginUserName = value[i].fullName.toString(),
                     strLoginUserImage = value[i].image.toString(),
+                    strFirebaseId = value[i].firebaseId.toString(),
+                    strLoginUserImage = value[i].image.toString(),
                     // print(strLoginUserImage),
                     //
                   },
@@ -191,12 +203,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ZegoAudioScreen(),
-                    ),
-                  );
+                  funcGetDeviceTokenFromXMPP();
+
                   /*Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -235,17 +243,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  /*Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => VideoCallScreen(
-                        getAllData: widget.chatDialogData,
-                        strGetCallStatus: 'make_call',
-                      ),
+                      builder: (context) => const ZegoVideoScreen(),
                     ),
-                  );*/
+                  );
                   //
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => NewVideoCallScreen(
@@ -253,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         callStatus: 'make_call',
                       ),
                     ),
-                  );
+                  );*/
                 },
                 onTapDown: () => HapticFeedback.vibrate(),
                 child: const Row(
@@ -571,6 +576,126 @@ class _ChatScreenState extends State<ChatScreen> {
         //
       ],
     );
+  }
+
+  funcGetDeviceTokenFromXMPP() {
+    //
+    showLoadingUI(context, 'please wait...');
+    //
+    FirebaseFirestore.instance
+        .collection("${strFirebaseMode}member")
+        .doc("India")
+        .collection("details")
+        .where("firebaseId", isEqualTo: strReceiverFirebaseId.toString())
+        .get()
+        .then((value) {
+      if (kDebugMode) {
+        print(value.docs);
+      }
+
+      if (value.docs.isEmpty) {
+        if (kDebugMode) {
+          print('======> NO USER FOUND');
+        }
+        //
+      } else {
+        for (var element in value.docs) {
+          if (kDebugMode) {
+            print('======> YES,  USER FOUND');
+            print(element.data());
+            print(element.data()['firebaseId'].toString());
+            print(element.data()['device'].toString());
+          }
+
+          //
+          funcSendNotification(
+            element.data()['deviceToken'].toString(),
+            element.data()['firebaseId'].toString(),
+            element.data()['device'].toString(),
+          );
+          //
+        }
+      }
+    });
+
+    //
+  }
+
+  funcSendNotification(
+    getDeviceToken,
+    getFirebaseId,
+    getDevice,
+  ) async {
+    // upload feeds data to time line
+    //
+    if (kDebugMode) {
+      print('=====> POST : SEND NOTIFICATION <===== ');
+      print(getDeviceToken);
+      print(getFirebaseId);
+      print(getDevice);
+    }
+
+    var customJsonArray = [
+      {
+        'device': getDevice.toString(),
+        'deviceToken': getDeviceToken.toString(),
+      }
+    ];
+
+    if (kDebugMode) {
+      print(customJsonArray);
+    }
+
+    String encoded = jsonEncode(customJsonArray);
+
+    final resposne = await http.post(
+      Uri.parse(
+        applicationBaseURL,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'action': 'groupsentnotification',
+          'message': 'Incoming Video Call',
+          'userId': strFirebaseId.toString(),
+          'name': strLoginUserName.toString(),
+          'image': strLoginUserImage.toString(),
+          'deviceJson': encoded,
+          'type': 'videoCall',
+          'channelName': uuid.toString(),
+        },
+      ),
+    );
+
+    // convert data to dict
+    var data = jsonDecode(resposne.body);
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (resposne.statusCode == 200) {
+      if (data['status'].toString().toLowerCase() == 'success') {
+        //
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ZegoAudioScreen(),
+          ),
+        );
+        //
+      } else {
+        if (kDebugMode) {
+          print(
+            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
+          );
+        }
+      }
+    } else {
+      // return postList;
+    }
   }
 
   //

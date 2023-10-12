@@ -487,13 +487,7 @@ class _NewVideoCallScreenState extends State<NewVideoCallScreen> {
           if (kDebugMode) {
             print('======> YES,  USER FOUND');
           }
-          /*if (kDebugMode) {
-            print(element.id);
-            print(element.data()['firebaseId']);
-            print(element.data()['deviceToken']);
-            print(element.data()['device']);
-            // print(element.id.runtimeType);
-          }*/
+
           //
           funcSendNotification(
             element.data()['deviceToken'].toString(),

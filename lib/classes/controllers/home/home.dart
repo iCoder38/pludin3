@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
@@ -28,7 +29,7 @@ import 'package:pludin/classes/header/utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:neopop/neopop.dart';
 
-import 'package:http/http.dart' as http;
+
 
 import 'package:image_picker/image_picker.dart';
 import 'package:quickalert/models/quickalert_type.dart';
