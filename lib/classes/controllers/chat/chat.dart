@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'dart:io';
 import 'dart:math';
@@ -24,6 +24,7 @@ import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_au
 import 'package:pludin/classes/controllers/zego_audio/zego_audio.dart';
 import 'package:pludin/classes/controllers/zego_video/zego_video.dart';
 import 'package:uuid/uuid.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../../header/utils.dart';
 import '../database/database_helper.dart';
@@ -203,7 +204,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  funcGetDeviceTokenFromXMPP();
+                  funcGetDeviceTokenFromXMPP('voice');
 
                   /*Navigator.push(
                     context,
@@ -243,12 +244,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTapUp: () {
                   //
-                  Navigator.push(
+                  funcGetDeviceTokenFromXMPP('video');
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const ZegoVideoScreen(),
                     ),
-                  );
+                  );*/
                   //
                   /*Navigator.push(
                     context,
@@ -578,9 +580,14 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  funcGetDeviceTokenFromXMPP() {
+  funcGetDeviceTokenFromXMPP(call_type) {
     //
-    showLoadingUI(context, 'please wait...');
+    // showLoadingUI(context, 'please wait...');
+    const snackBar = SnackBar(
+      backgroundColor: Colors.green,
+      content: Text('Please wait...'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     //
     FirebaseFirestore.instance
         .collection("${strFirebaseMode}member")
@@ -609,10 +616,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
           //
           funcSendNotification(
-            element.data()['deviceToken'].toString(),
-            element.data()['firebaseId'].toString(),
-            element.data()['device'].toString(),
-          );
+              element.data()['deviceToken'].toString(),
+              element.data()['firebaseId'].toString(),
+              element.data()['device'].toString(),
+              call_type);
           //
         }
       }
@@ -621,11 +628,7 @@ class _ChatScreenState extends State<ChatScreen> {
     //
   }
 
-  funcSendNotification(
-    getDeviceToken,
-    getFirebaseId,
-    getDevice,
-  ) async {
+  funcSendNotification(getDeviceToken, getFirebaseId, getDevice, type) async {
     // upload feeds data to time line
     //
     if (kDebugMode) {
@@ -658,12 +661,13 @@ class _ChatScreenState extends State<ChatScreen> {
       body: jsonEncode(
         <String, dynamic>{
           'action': 'groupsentnotification',
-          'message': 'Incoming Video Call',
+          'message':
+              (type == 'voice') ? 'Incoming Audio Call' : 'Imcoming Video Call',
           'userId': strFirebaseId.toString(),
           'name': strLoginUserName.toString(),
           'image': strLoginUserImage.toString(),
           'deviceJson': encoded,
-          'type': 'videoCall',
+          'type': (type == 'voice') ? 'audioCall' : 'videoCall',
           'channelName': uuid.toString(),
         },
       ),
@@ -678,13 +682,29 @@ class _ChatScreenState extends State<ChatScreen> {
     if (resposne.statusCode == 200) {
       if (data['status'].toString().toLowerCase() == 'success') {
         //
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ZegoAudioScreen(),
-          ),
-        );
+        // Navigator.pop(context);
+
+        (type == 'voice')
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ZegoAudioScreen(
+                    channelName: uuid.toString(),
+                    userIdIs: strFirebaseId.toString(),
+                    userName: strLoginUserName.toString(),
+                  ),
+                ),
+              )
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ZegoVideoScreen(
+                    channelName: uuid.toString(),
+                    userIdIs: strFirebaseId.toString(),
+                    userName: strLoginUserName.toString(),
+                  ),
+                ),
+              );
         //
       } else {
         if (kDebugMode) {

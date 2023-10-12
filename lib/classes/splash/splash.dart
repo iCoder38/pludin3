@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +11,9 @@ import 'package:pludin/classes/controllers/UI/designs/splash_mid_logo/splash_cen
 import 'package:pludin/classes/controllers/chat_audio_call/chat_audio_call.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_audio_call.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/new_audio_get_call/new_audio_get_call.dart';
+import 'package:pludin/classes/controllers/zego_audio/zego_audio.dart';
+import 'package:pludin/classes/controllers/zego_video/zego_video.dart';
+import 'package:pludin/classes/header/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/database/database_helper.dart';
@@ -37,6 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
   late DataBase handler;
   //
   Timer? timer;
+  //
+  var strLoginUserId = '0';
+  var strLoginFirebaseId = '0';
   //
   @override
   void initState() {
@@ -76,6 +84,17 @@ class _SplashScreenState extends State<SplashScreen> {
           if (kDebugMode) {
             print('YES, LOCAL DB HAVE SOME DATA');
           }
+
+          handler.retrievePlanetsById(1).then((value) => {
+                for (int i = 0; i < value.length; i++)
+                  {
+                    strLoginUserId = value[i].fullName.toString(),
+                    strLoginFirebaseId = value[i].firebaseId.toString(),
+
+                    //
+                  },
+              });
+
           // push to home screen
           Navigator.pushNamed(context, 'push_to_home_screen');
           //
@@ -182,7 +201,27 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (message.data['type'].toString() == 'audioCall') {
         //
-        Navigator.push(
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ZegoAudioScreen(
+              channelName: message.data['channelName'].toString(),
+              userName: 'vedica'.toString(),
+            ),
+          ),
+        );*/
+
+        ///
+        ///
+        ///
+        callAcceptOrDecline(
+          context,
+          message.data['name'].toString(),
+          message.data['channelName'].toString(),
+        );
+
+        ///
+        /*Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => NewAudioGetCallScreen(
@@ -190,10 +229,10 @@ class _SplashScreenState extends State<SplashScreen> {
               callStatus: 'get_call',
             ),
           ),
-        );
+        );*/
       } else if (message.data['type'].toString() == 'videoCall') {
         //
-        Navigator.push(
+        /*Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => NewVideoGetCallScreen(
@@ -201,9 +240,185 @@ class _SplashScreenState extends State<SplashScreen> {
               callStatus: 'get_call',
             ),
           ),
+        );*/
+        ///
+        ///
+        ///
+        callAcceptOrDeclineVideoCall(
+          context,
+          message.data['name'].toString(),
+          message.data['channelName'].toString(),
         );
       }
     });
+  }
+
+//
+  void callAcceptOrDecline(
+    BuildContext context,
+    String call_from,
+    String channel_name,
+  ) async {
+    await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // const SizedBox(height: 8),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: textWithBoldStyle(
+                      //
+                      'Incoming Audio Call From $call_from',
+                      //
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      //
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ZegoAudioScreen(
+                            userIdIs: strLoginFirebaseId.toString(),
+                            channelName: channel_name.toString(),
+                            userName: strLoginUserId.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.transparent,
+                      child: Center(
+                        child: textWithBoldStyle(
+                          'Accept',
+                          Colors.green,
+                          16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.transparent,
+                    child: Center(
+                      child: textWithBoldStyle(
+                        'Decline',
+                        Colors.redAccent,
+                        14.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+//
+  void callAcceptOrDeclineVideoCall(
+    BuildContext context,
+    String call_from,
+    String channel_name,
+  ) async {
+    await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // const SizedBox(height: 8),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: textWithBoldStyle(
+                      //
+                      'Incoming Video Call From $call_from',
+                      //
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      //
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ZegoVideoScreen(
+                            userIdIs: strLoginFirebaseId.toString(),
+                            channelName: channel_name.toString(),
+                            userName: strLoginUserId.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.transparent,
+                      child: Center(
+                        child: textWithBoldStyle(
+                          'Accept',
+                          Colors.green,
+                          16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.transparent,
+                    child: Center(
+                      child: textWithBoldStyle(
+                        'Decline',
+                        Colors.redAccent,
+                        14.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   funcClickOnNotification() {
@@ -217,7 +432,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (remoteMessage.data['type'].toString() == 'audioCall') {
         //
-        Navigator.push(
+        callAcceptOrDecline(
+          context,
+          remoteMessage.data['name'].toString(),
+          remoteMessage.data['channelName'].toString(),
+        );
+        /*Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => NewAudioGetCallScreen(
@@ -225,7 +445,7 @@ class _SplashScreenState extends State<SplashScreen> {
               callStatus: 'get_call',
             ),
           ),
-        );
+        );*/
       } else if (remoteMessage.data['type'].toString() == 'videoCall') {
         //
         Navigator.push(
