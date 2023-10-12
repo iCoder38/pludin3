@@ -71,6 +71,7 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
       print('=========== IN AUDIO CALL SCREEN ============');
       print(widget.getFullDetailsOfThatDialog);
       print(widget.callStatus);
+      // print(widget.getFullDetailsOfThatDialog['']);
       print('=============================================');
       print('=============================================');
     }
@@ -85,8 +86,19 @@ class _NewAudioCallScreenState extends State<NewAudioCallScreen> {
     //
     localCallStatus = '0';
     //
-    channelName =
-        '${widget.getFullDetailsOfThatDialog['sender_firebase_id'].toString()}+${widget.getFullDetailsOfThatDialog['receiver_firebase_id'].toString()}';
+
+    if (widget.callStatus == 'get_call') {
+      channelName = widget.getFullDetailsOfThatDialog['channelName'].toString();
+    } else {
+      channelName =
+          '${widget.getFullDetailsOfThatDialog['sender_firebase_id'].toString()}+${widget.getFullDetailsOfThatDialog['receiver_firebase_id'].toString()}';
+    }
+
+    print('=============================================');
+    print('=============================================');
+    print(channelName);
+    print('=============================================');
+    print('=============================================');
 
     super.initState();
   }

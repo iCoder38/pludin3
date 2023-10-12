@@ -561,7 +561,7 @@ class _NewVideoCallScreenState extends State<NewVideoCallScreen> {
           'name': strLoginUserName.toString(),
           'image': strLoginUserImage.toString(),
           'deviceJson': encoded,
-          'type': 'videocall',
+          'type': 'videoCall',
           'channelName': channelName.toString(),
         },
       ),

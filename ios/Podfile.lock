@@ -662,6 +662,8 @@ PODS:
   - AgoraRtcEngine_iOS/VideoCodecEnc (4.2.2)
   - AgoraRtcEngine_iOS/VirtualBackground (4.2.2)
   - AgoraRtcEngine_iOS/VQA (4.2.2)
+  - audioplayers_darwin (0.0.1):
+    - Flutter
   - BoringSSL-GRPC (0.0.24):
     - BoringSSL-GRPC/Implementation (= 0.0.24)
     - BoringSSL-GRPC/Interface (= 0.0.24)
@@ -673,7 +675,42 @@ PODS:
     - firebase_core
     - Flutter
     - nanopb (< 2.30910.0, >= 2.30908.0)
+  - CryptoSwift (1.8.0)
   - device_info_plus (0.0.1):
+    - Flutter
+  - DKImagePickerController/Core (4.3.4):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.4)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
     - Flutter
   - Firebase/Auth (10.12.0):
     - Firebase/CoreOnly
@@ -704,21 +741,21 @@ PODS:
     - Firebase/Storage (= 10.12.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheckInterop (10.15.0)
+  - FirebaseAppCheckInterop (10.16.0)
   - FirebaseAuth (10.12.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
-  - FirebaseAuthInterop (10.15.0)
+  - FirebaseAuthInterop (10.16.0)
   - FirebaseCore (10.12.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreExtension (10.15.0):
+  - FirebaseCoreExtension (10.16.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseCoreInternal (10.15.0):
+  - FirebaseCoreInternal (10.16.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseFirestore (10.12.0):
     - abseil/algorithm (~> 1.20220623.0)
@@ -733,7 +770,7 @@ PODS:
     - "gRPC-C++ (~> 1.50.1)"
     - leveldb-library (~> 1.22)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseInstallations (10.15.0):
+  - FirebaseInstallations (10.16.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -754,11 +791,19 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_callkit_incoming_yoer (0.0.1):
+    - CryptoSwift
+    - Flutter
   - flutter_email_sender (0.0.1):
     - Flutter
+  - flutter_logs (0.0.1):
+    - Flutter
+    - ZIPFoundation
   - flutter_phone_direct_caller (0.0.1):
     - Flutter
   - flutter_sms (1.1.0):
+    - Flutter
+  - flutter_vibrate (0.0.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -860,6 +905,8 @@ PODS:
     - Flutter
   - iris_method_channel (0.0.1):
     - Flutter
+  - is_lock_screen2 (2.0.1):
+    - Flutter
   - leveldb-library (1.22.2)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
@@ -878,6 +925,8 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - native_device_orientation (0.0.1):
+    - Flutter
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -888,12 +937,16 @@ PODS:
   - permission_handler_apple (9.1.1):
     - Flutter
   - PromisesObjC (2.3.1)
+  - SDWebImage (5.18.3):
+    - SDWebImage/Core (= 5.18.3)
+  - SDWebImage/Core (5.18.3)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
+  - SwiftyGif (5.4.4)
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
@@ -903,23 +956,43 @@ PODS:
     - libwebp
   - wakelock_plus (0.0.1):
     - Flutter
+  - zego_express_engine (3.9.0):
+    - Flutter
+  - zego_uikit_signaling_plugin (0.0.1):
+    - Flutter
+  - zego_zim (2.10.0):
+    - Flutter
+    - ZIM (= 2.10.0)
+  - zego_zpns (2.5.0):
+    - Flutter
+    - ZPNs (= 2.5.0)
+  - ZIM (2.10.0)
+  - ZIPFoundation (0.9.16)
+  - ZPNs (2.5.0)
 
 DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_callkit_incoming_yoer (from `.symlinks/plugins/flutter_callkit_incoming_yoer/ios`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
+  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
   - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
   - flutter_sms (from `.symlinks/plugins/flutter_sms/ios`)
+  - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - iris_method_channel (from `.symlinks/plugins/iris_method_channel/ios`)
+  - is_lock_screen2 (from `.symlinks/plugins/is_lock_screen2/ios`)
+  - native_device_orientation (from `.symlinks/plugins/native_device_orientation/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - pdfx (from `.symlinks/plugins/pdfx/ios`)
@@ -930,6 +1003,10 @@ DEPENDENCIES:
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
   - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
+  - zego_express_engine (from `.symlinks/plugins/zego_express_engine/ios`)
+  - zego_uikit_signaling_plugin (from `.symlinks/plugins/zego_uikit_signaling_plugin/ios`)
+  - zego_zim (from `.symlinks/plugins/zego_zim/ios`)
+  - zego_zpns (from `.symlinks/plugins/zego_zpns/ios`)
 
 SPEC REPOS:
   trunk:
@@ -937,6 +1014,9 @@ SPEC REPOS:
     - AgoraIrisRTC_iOS
     - AgoraRtcEngine_iOS
     - BoringSSL-GRPC
+    - CryptoSwift
+    - DKImagePickerController
+    - DKPhotoGallery
     - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -959,14 +1039,23 @@ SPEC REPOS:
     - libwebp
     - nanopb
     - PromisesObjC
+    - SDWebImage
+    - SwiftyGif
+    - ZIM
+    - ZIPFoundation
+    - ZPNs
 
 EXTERNAL SOURCES:
   agora_rtc_engine:
     :path: ".symlinks/plugins/agora_rtc_engine/ios"
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -977,12 +1066,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_callkit_incoming_yoer:
+    :path: ".symlinks/plugins/flutter_callkit_incoming_yoer/ios"
   flutter_email_sender:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
+  flutter_logs:
+    :path: ".symlinks/plugins/flutter_logs/ios"
   flutter_phone_direct_caller:
     :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
   flutter_sms:
     :path: ".symlinks/plugins/flutter_sms/ios"
+  flutter_vibrate:
+    :path: ".symlinks/plugins/flutter_vibrate/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter_ios:
@@ -991,6 +1086,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   iris_method_channel:
     :path: ".symlinks/plugins/iris_method_channel/ios"
+  is_lock_screen2:
+    :path: ".symlinks/plugins/is_lock_screen2/ios"
+  native_device_orientation:
+    :path: ".symlinks/plugins/native_device_orientation/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -1011,34 +1110,50 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_thumbnail/ios"
   wakelock_plus:
     :path: ".symlinks/plugins/wakelock_plus/ios"
+  zego_express_engine:
+    :path: ".symlinks/plugins/zego_express_engine/ios"
+  zego_uikit_signaling_plugin:
+    :path: ".symlinks/plugins/zego_uikit_signaling_plugin/ios"
+  zego_zim:
+    :path: ".symlinks/plugins/zego_zim/ios"
+  zego_zpns:
+    :path: ".symlinks/plugins/zego_zpns/ios"
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   agora_rtc_engine: 667a7de14f35858a31b0c64cd54042a2158ef198
   AgoraIrisRTC_iOS: 7e71322c06db6c29ceaf89a964fb8b2700a75001
   AgoraRtcEngine_iOS: c510de329cd905daff3f01fa4c872ea6d5eaee23
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: 005e157ad342dbfb2e461cb111a9020aa71bfb22
+  CryptoSwift: 52aaf3fce7337552863b1d952e408085f0e65030
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   Firebase: 07150e75d142fb9399f6777fa56a187b17f833a0
   firebase_auth: 3f7820b22557dd4a1b024f4d86947d1a0ff8a10f
   firebase_core: e477125798fc37cd4ab43ca6a8536bf7e0929c00
   firebase_messaging: 334d68c3a36b6d4d5cd91e4f42509e0d4ae49828
   firebase_storage: d5c1b95383db1230d9fed88c76cb257d8d1ec1d6
-  FirebaseAppCheckInterop: a8c555b1c2db1d9445e6c3a08a848167ddb7eb51
+  FirebaseAppCheckInterop: 82358cff9f33452dd44259e88eea5e562500b1cb
   FirebaseAuth: a66c1e14ec58f41d154a4b41ce1a23ea00ad4805
-  FirebaseAuthInterop: b566e21e2bc5e44a4d44babc56d05a7e5c10493b
+  FirebaseAuthInterop: b79fab8ce80e685145eee5f973d9ad5210e19d44
   FirebaseCore: f86a1394906b97ac445ae49c92552a9425831bed
-  FirebaseCoreExtension: d3f1ea3725fb41f56e8fbfb29eeaff54e7ffb8f6
-  FirebaseCoreInternal: 2f4bee5ed00301b5e56da0849268797a2dd31fb4
+  FirebaseCoreExtension: 2dbc745b337eb99d2026a7a309ae037bd873f45e
+  FirebaseCoreInternal: 26233f705cc4531236818a07ac84d20c333e505a
   FirebaseFirestore: f94c9541515fa4a49af52269bbc50349009424b4
-  FirebaseInstallations: cae95cab0f965ce05b805189de1d4c70b11c76fb
+  FirebaseInstallations: b822f91a61f7d1ba763e5ccc9d4f2e6f2ed3b3ee
   FirebaseMessaging: bb2c4f6422a753038fe137d90ae7c1af57251316
   FirebaseStorage: 1d7ca8c8953fc61ccacaa7c612696b5402968a0d
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_callkit_incoming_yoer: a5936b9f065762a7b422594028d3a20901c88996
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
+  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
   flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
   flutter_sms: 91ce41530f55c85d6524d82307a5d555844c086a
+  flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   google_maps_flutter_ios: abdac20d6ce8931f6ebc5f46616df241bfaa2cfd
@@ -1050,21 +1165,32 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   iris_method_channel: 0617c689164d8154c020c50f63ca79f92b8a7b9d
+  is_lock_screen2: 2bc16ada7d49434ba1a2b24f09aa49a87b154e79
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  native_device_orientation: 3b4cfc9565a7b879cc4fde282b3e27745e852d0d
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   pdfx: 7b876b09de8b7a0bf444a4f82b439ffcff4ee1ec
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
+  SDWebImage: 96e0c18ef14010b7485210e92fac888587ebb958
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
+  zego_express_engine: f2abe70e6484d4d199e516d4c2d72127f64b1edd
+  zego_uikit_signaling_plugin: 7fdfcd9f796b591c9cb8770609f4fa85178aa40e
+  zego_zim: c344b303b00434e70f7a25a756d42be6082c507f
+  zego_zpns: 703c48f93ee481ac849fd83a497f72aaa1902a85
+  ZIM: b0f5fdf211b723819043019373f9003d5e98420d
+  ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
+  ZPNs: 3f73f4ee16eef87db96986d85b2c1b4e2286f4ee
 
 PODFILE CHECKSUM: 945803f76e8358d8c195819e849b3f61ca7afd29
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

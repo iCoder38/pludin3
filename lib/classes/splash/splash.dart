@@ -158,26 +158,50 @@ class _SplashScreenState extends State<SplashScreen> {
         // });
       }
       //
+      // if (message.data['type'].toString() == 'audioCall') {
+      //   //
+      //   if (kDebugMode) {
+      //     print(message.data['channel_name'].toString());
+      //     print('PUSH TO AUDIO SCREEN');
+      //   }
+      //   //
+
+      //   /*Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => ChatAudioCallScreen(
+      //         getAllData: message.data,
+      //         strGetCallStatus: 'get_call',
+      //       ),
+      //     ),
+      //   );*/
+      //   //
+      // } else if (message.data['type'].toString() == 'videoCall') {
+      //   //
+      // }
+
       if (message.data['type'].toString() == 'audioCall') {
         //
-        if (kDebugMode) {
-          print(message.data['channel_name'].toString());
-          print('PUSH TO AUDIO SCREEN');
-        }
-        //
-
-        /*Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatAudioCallScreen(
-              getAllData: message.data,
-              strGetCallStatus: 'get_call',
+            builder: (context) => NewAudioGetCallScreen(
+              getFullDetailsOfThatDialog: message.data,
+              callStatus: 'get_call',
             ),
           ),
-        );*/
-        //
+        );
       } else if (message.data['type'].toString() == 'videoCall') {
         //
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewVideoGetCallScreen(
+              getFullDetailsOfThatDialog: message.data,
+              callStatus: 'get_call',
+            ),
+          ),
+        );
       }
     });
   }
@@ -202,7 +226,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
         );
-      } else if (remoteMessage.data['type'].toString() == 'videocall') {
+      } else if (remoteMessage.data['type'].toString() == 'videoCall') {
         //
         Navigator.push(
           context,

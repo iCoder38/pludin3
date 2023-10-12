@@ -102,6 +102,14 @@ class _NewAudioGetCallScreenState extends State<NewAudioGetCallScreen> {
   funcGetCallManage() {
     channelName = widget.getFullDetailsOfThatDialog['channelName'].toString();
 
+    if (kDebugMode) {
+      print('=============================================');
+      print('============= channel name =====================');
+      print(channelName);
+      print('=============================================');
+      print('=============================================');
+    }
+
     //
     final values =
         widget.getFullDetailsOfThatDialog['channelName'].toString().split('+');
