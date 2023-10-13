@@ -12,6 +12,8 @@ import 'package:pludin/classes/controllers/chat_audio_call/chat_audio_call.dart'
 import 'package:pludin/classes/controllers/chat_audio_call/new_audio_call/new_audio_call.dart';
 import 'package:pludin/classes/controllers/chat_audio_call/new_audio_get_call/new_audio_get_call.dart';
 import 'package:pludin/classes/controllers/zego_audio/zego_audio.dart';
+import 'package:pludin/classes/controllers/zego_group_audio/zego_group_audio.dart';
+import 'package:pludin/classes/controllers/zego_group_video/zego_group_video.dart';
 import 'package:pludin/classes/controllers/zego_video/zego_video.dart';
 import 'package:pludin/classes/header/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -189,9 +191,18 @@ class _SplashScreenState extends State<SplashScreen> {
         );
 
         ///
-      } else if (message.data['type'].toString() == 'groupVoiceCall') {
+      } else if (message.data['type'].toString() == 'groupAudioCall') {
         ///
         acceptDeclineGroupVoiceCall(
+          context,
+          message.data['name'].toString(),
+          message.data['channelName'].toString(),
+        );
+
+        /// acceptDeclineGroupVideoCall
+      } else if (message.data['type'].toString() == 'groupVideoCall') {
+        ///
+        acceptDeclineGroupVideoCall(
           context,
           message.data['name'].toString(),
           message.data['channelName'].toString(),
@@ -371,6 +382,126 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
 //
+  void acceptDeclineGroupVideoCall(
+    BuildContext context,
+    String call_from,
+    String channel_name,
+  ) async {
+    await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // const SizedBox(height: 8),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: textWithBoldStyle(
+                      //
+                      'Incoming Group Audio Call',
+                      //
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: textWithRegularStyle(
+                      //
+                      funcSplitNameWithGroupName(call_from),
+                      //call_from.toString(),
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          //
+
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ZeroGroupVideoScreen(
+                                userIdIs: strLoginFirebaseId.toString(),
+                                channelName: channel_name.toString(),
+                                userName: strLoginUserId.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 40,
+                          // width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.green[400],
+                            borderRadius: BorderRadius.circular(
+                              12.0,
+                            ),
+                          ),
+                          child: Center(
+                            child: textWithBoldStyle(
+                              'Accept',
+                              Colors.black,
+                              16.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    //
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    //
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        // width: MediaQuery.of(context).size.width,
+
+                        decoration: BoxDecoration(
+                          color: Colors.red[400],
+                          borderRadius: BorderRadius.circular(
+                            12.0,
+                          ),
+                        ),
+                        child: Center(
+                          child: textWithBoldStyle(
+                            'Decline',
+                            Colors.white,
+                            16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+//
   void acceptDeclineGroupVoiceCall(
     BuildContext context,
     String call_from,
@@ -392,7 +523,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: SingleChildScrollView(
                     child: textWithBoldStyle(
                       //
-                      'Incoming Group Audio Call From $call_from',
+                      'Incoming Group Audio Call',
                       //
                       Colors.black,
                       16.0,
@@ -400,51 +531,87 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Flexible(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: SingleChildScrollView(
+                    child: textWithRegularStyle(
                       //
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ZegoVideoScreen(
-                            userIdIs: strLoginFirebaseId.toString(),
-                            channelName: channel_name.toString(),
-                            userName: strLoginUserId.toString(),
+                      funcSplitNameWithGroupName(call_from),
+                      //call_from.toString(),
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          //
+
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ZegoGroupAudioScreen(
+                                userIdIs: strLoginFirebaseId.toString(),
+                                channelName: channel_name.toString(),
+                                userName: strLoginUserId.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 40,
+                          // width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.green[400],
+                            borderRadius: BorderRadius.circular(
+                              12.0,
+                            ),
+                          ),
+                          child: Center(
+                            child: textWithBoldStyle(
+                              'Accept',
+                              Colors.black,
+                              16.0,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: Container(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.transparent,
-                      child: Center(
-                        child: textWithBoldStyle(
-                          'Accept',
-                          Colors.green,
-                          16.0,
+                      ),
+                    ),
+                    //
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    //
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        // width: MediaQuery.of(context).size.width,
+
+                        decoration: BoxDecoration(
+                          color: Colors.red[400],
+                          borderRadius: BorderRadius.circular(
+                            12.0,
+                          ),
+                        ),
+                        child: Center(
+                          child: textWithBoldStyle(
+                            'Decline',
+                            Colors.white,
+                            16.0,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Flexible(
-                  child: Container(
-                    height: 40,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.transparent,
-                    child: Center(
-                      child: textWithBoldStyle(
-                        'Decline',
-                        Colors.redAccent,
-                        14.0,
-                      ),
-                    ),
-                  ),
+                    //
+                  ],
                 ),
               ],
             ),

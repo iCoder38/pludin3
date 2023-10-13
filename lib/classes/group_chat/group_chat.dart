@@ -230,7 +230,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                 onTapUp: () {
                   //
                   // funcGetDeviceTokenFromXMPP('voice');
-                  funcCallGroupAudioCall();
+                  funcCallGroupAudioCall('audio');
                   //
                 },
                 onTapDown: () => HapticFeedback.vibrate(),
@@ -246,6 +246,39 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               ),
             ),
           ),
+          //
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: NeoPopButton(
+                color: navigationColor,
+                // onTapUp: () => HapticFeedback.vibrate(),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                ),
+                onTapUp: () {
+                  //
+                  // funcGetDeviceTokenFromXMPP('voice');
+                  funcCallGroupAudioCall('video');
+                  //
+                },
+                onTapDown: () => HapticFeedback.vibrate(),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.video_call,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          //
         ],
       ),
       body: Stack(
@@ -1185,7 +1218,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   }
 
   //
-  funcCallGroupAudioCall() {
+  funcCallGroupAudioCall(type) {
     print(save_members_details);
     print('========= MY DEVICE TOKEN =============');
     print(strLoginUserDeviceToken);
@@ -1215,7 +1248,12 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
     print('============================');
     String encoded = jsonEncode(arr_device_and_token);
     //
-    funcSendNotification(encoded, 'groupVoiceCall');
+    if (type == 'audio') {
+      funcSendNotification(encoded, 'groupVoiceCall');
+    } else {
+      funcSendNotification(encoded, 'groupVideoCall');
+    }
+
     //
   }
 
@@ -1238,13 +1276,15 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       body: jsonEncode(
         <String, dynamic>{
           'action': 'groupsentnotification',
-          'message': 'Incoming Group Audio Call',
-          // (type == 'voice') ? 'Incoming Audio Call' : 'Imcoming Video Call',
+          'message': (type == 'groupVoiceCall')
+              ? 'Incoming Group Audio Call'
+              : 'Incoming Group Video Call',
           'userId': strLoginUserFirebaseId.toString(),
-          'name': strLoginUserName.toString(),
+          'name': '$strGroupName|%|$strLoginUserName',
           'image': strloginUserImage.toString(),
           'deviceJson': jsonData,
-          'type': type, //(type == 'voice') ? 'audioCall' : 'videoCall',
+          'type':
+              (type == 'groupVoiceCall') ? 'groupAudioCall' : 'groupVideoCall',
           'channelName': uuid.toString(),
         },
       ),
@@ -1260,17 +1300,30 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       if (data['status'].toString().toLowerCase() == 'success') {
         //
         // Navigator.pop(context);
-
-        /* Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ZegoGroupAudioScreen(
-              channelName: uuid.toString(),
-              userIdIs: strLoginUserFirebaseId.toString(),
-              userName: strLoginUserName.toString(),
+        if (type == 'groupVoiceCall') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ZegoGroupAudioScreen(
+                channelName: uuid.toString(),
+                userIdIs: strLoginUserFirebaseId.toString(),
+                userName: strLoginUserName.toString(),
+              ),
             ),
-          ),
-        );*/
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ZegoVideoScreen(
+                channelName: uuid.toString(),
+                userIdIs: strLoginUserFirebaseId.toString(),
+                userName: strLoginUserName.toString(),
+              ),
+            ),
+          );
+        }
+
         //
       } else {
         if (kDebugMode) {

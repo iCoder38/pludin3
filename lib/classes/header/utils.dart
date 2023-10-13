@@ -1,4 +1,6 @@
 // text with regular
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -74,6 +76,13 @@ funcConvertTimeStampToDateAndTime(getTimeStamp) {
   return d12HourFormatTime;
 }
 
+/* ================================================================ */
+/* ================================================================ */
+
+funcSplitNameWithGroupName(get_name) {
+  final splitted = get_name.split('|%|');
+  return splitted[0];
+}
 /* ================================================================ */
 /* ================================================================ */
 
