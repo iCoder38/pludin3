@@ -107,8 +107,6 @@ void showLoadingUI(BuildContext context, String message) async {
       );
     },
   );
-
-  //
 }
 
 //

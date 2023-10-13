@@ -1,7 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+
+import 'package:http/http.dart' as http;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,8 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:pludin/classes/controllers/zego_group_audio/zego_group_audio.dart';
+import 'package:pludin/classes/controllers/zego_video/zego_video.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:uuid/uuid.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -39,6 +45,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   var strLoginUserId = '';
   var strLoginUserFirebaseId = '';
   var strloginUserImage = '';
+  var strLoginUserDeviceToken = '';
   //
   var strScrollOnlyOneTime = '1';
   var lastMessage = '';
@@ -52,14 +59,20 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   //
   TextEditingController contTextSendMessage = TextEditingController();
   //
+  // audio call
+  var save_members_details = [];
   var strGroupName = '';
   var strDisableTextField = '1';
+  //
+  var uuid = const Uuid().v4();
   //
   @override
   void initState() {
     if (kDebugMode) {
       print('**************** CHAT DATA ***************************');
       print(widget.chatDialogData);
+      print('**************** MATCH ***************************');
+      print(widget.chatDialogData['match']);
       print('*******************************************************');
     }
     super.initState();
@@ -73,6 +86,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
     strGroupName = widget.chatDialogData['group_name'].toString();
     //
     // funcCheckMemberIsInGroupXMPP();
+    funcGetMembersDataFromFirebase('group_voice');
     //
   }
 
@@ -109,6 +123,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                     strLoginUserName = value[i].fullName.toString(),
                     strLoginUserFirebaseId = value[i].firebaseId.toString(),
                     strloginUserImage = value[i].image.toString(),
+                    strLoginUserDeviceToken = value[i].deviceToken.toString()
                     //
                   },
               });
@@ -199,6 +214,39 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
           ],
         ),
         backgroundColor: navigationColor,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: NeoPopButton(
+                color: navigationColor,
+                // onTapUp: () => HapticFeedback.vibrate(),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                ),
+                onTapUp: () {
+                  //
+                  // funcGetDeviceTokenFromXMPP('voice');
+                  funcCallGroupAudioCall();
+                  //
+                },
+                onTapDown: () => HapticFeedback.vibrate(),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -1080,5 +1128,159 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       text: 'message'.toString(),
     );
     //
+  }
+
+  //
+  funcGetMembersDataFromFirebase(call_type) {
+    print("====> TRYING TO GET ALL MEMBER'S DATA");
+    //
+    save_members_details.clear();
+    //
+    var arr_chat_dialog = [];
+
+    for (int i = 0; i < widget.chatDialogData['match'].length; i++) {
+      print(widget.chatDialogData['match'][i]);
+      FirebaseFirestore.instance
+          .collection("${strFirebaseMode}member")
+          .doc("India")
+          .collection("details")
+          .where("firebaseId",
+              isEqualTo: widget.chatDialogData['match'][i].toString())
+          .get()
+          .then((value) {
+        if (kDebugMode) {
+          print(value.docs);
+        }
+
+        if (value.docs.isEmpty) {
+          if (kDebugMode) {
+            print('======> NO USER FOUND');
+          }
+          //
+        } else {
+          for (var element in value.docs) {
+            if (kDebugMode) {
+              print('======> YES,  USER FOUND <=======');
+              print('*******************************************************');
+              print('*******************************************************');
+              print(element.data());
+              print('*******************************************************');
+              print('*******************************************************');
+              // print(element.data()['firebaseId'].toString());
+              // print(element.data()['device'].toString());
+            }
+            //
+            save_members_details.add(element.data());
+
+            //
+            /* */
+            //
+          }
+        }
+      });
+    }
+    //
+
+    //
+  }
+
+  //
+  funcCallGroupAudioCall() {
+    print(save_members_details);
+    print('========= MY DEVICE TOKEN =============');
+    print(strLoginUserDeviceToken);
+    print('=======================================');
+    const snackBar = SnackBar(
+      backgroundColor: Colors.green,
+      content: Text('Please wait...'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //
+    // create an array to save device and device token
+    var arr_device_and_token = [];
+    //
+    for (int i = 0; i < save_members_details.length; i++) {
+      var customJsonArray = {
+        'device': save_members_details[i]['device'].toString(),
+        'deviceToken': save_members_details[i]['deviceToken'].toString(),
+      };
+      if (strLoginUserFirebaseId !=
+          save_members_details[i]['firebaseId'].toString()) {
+        arr_device_and_token.add(customJsonArray);
+      }
+    }
+    //
+    print('============================');
+    print(arr_device_and_token);
+    print('============================');
+    String encoded = jsonEncode(arr_device_and_token);
+    //
+    funcSendNotification(encoded, 'groupVoiceCall');
+    //
+  }
+
+  //
+  funcSendNotification(jsonData, type) async {
+    // upload feeds data to time line
+    //
+    if (kDebugMode) {
+      print('=====> POST : SEND NOTIFICATION <===== ');
+      print(type);
+    }
+
+    final resposne = await http.post(
+      Uri.parse(
+        applicationBaseURL,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'action': 'groupsentnotification',
+          'message': 'Incoming Group Audio Call',
+          // (type == 'voice') ? 'Incoming Audio Call' : 'Imcoming Video Call',
+          'userId': strLoginUserFirebaseId.toString(),
+          'name': strLoginUserName.toString(),
+          'image': strloginUserImage.toString(),
+          'deviceJson': jsonData,
+          'type': type, //(type == 'voice') ? 'audioCall' : 'videoCall',
+          'channelName': uuid.toString(),
+        },
+      ),
+    );
+
+    // convert data to dict
+    var data = jsonDecode(resposne.body);
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (resposne.statusCode == 200) {
+      if (data['status'].toString().toLowerCase() == 'success') {
+        //
+        // Navigator.pop(context);
+
+        /* Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ZegoGroupAudioScreen(
+              channelName: uuid.toString(),
+              userIdIs: strLoginUserFirebaseId.toString(),
+              userName: strLoginUserName.toString(),
+            ),
+          ),
+        );*/
+        //
+      } else {
+        if (kDebugMode) {
+          print(
+            '====> SOMETHING WENT WRONG IN "addcart" WEBSERVICE. PLEASE CONTACT ADMIN',
+          );
+        }
+      }
+    } else {
+      // return postList;
+    }
   }
 }

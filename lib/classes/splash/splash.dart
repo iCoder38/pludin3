@@ -168,51 +168,10 @@ class _SplashScreenState extends State<SplashScreen> {
         if (kDebugMode) {
           print('Message data: ${message.data}');
           print('${message.data['userId']}');
-          // print(
-          // 'Message also contained a notification: ${message.notification}');
         }
-        // setState(() {
-        //   notifTitle = message.notification!.title;
-        //   notifBody = message.notification!.body;
-        // });
       }
-      //
-      // if (message.data['type'].toString() == 'audioCall') {
-      //   //
-      //   if (kDebugMode) {
-      //     print(message.data['channel_name'].toString());
-      //     print('PUSH TO AUDIO SCREEN');
-      //   }
-      //   //
-
-      //   /*Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => ChatAudioCallScreen(
-      //         getAllData: message.data,
-      //         strGetCallStatus: 'get_call',
-      //       ),
-      //     ),
-      //   );*/
-      //   //
-      // } else if (message.data['type'].toString() == 'videoCall') {
-      //   //
-      // }
 
       if (message.data['type'].toString() == 'audioCall') {
-        //
-        /*Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ZegoAudioScreen(
-              channelName: message.data['channelName'].toString(),
-              userName: 'vedica'.toString(),
-            ),
-          ),
-        );*/
-
-        ///
-        ///
         ///
         callAcceptOrDecline(
           context,
@@ -221,34 +180,24 @@ class _SplashScreenState extends State<SplashScreen> {
         );
 
         ///
-        /*Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewAudioGetCallScreen(
-              getFullDetailsOfThatDialog: message.data,
-              callStatus: 'get_call',
-            ),
-          ),
-        );*/
       } else if (message.data['type'].toString() == 'videoCall') {
-        //
-        /*Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewVideoGetCallScreen(
-              getFullDetailsOfThatDialog: message.data,
-              callStatus: 'get_call',
-            ),
-          ),
-        );*/
-        ///
-        ///
         ///
         callAcceptOrDeclineVideoCall(
           context,
           message.data['name'].toString(),
           message.data['channelName'].toString(),
         );
+
+        ///
+      } else if (message.data['type'].toString() == 'groupVoiceCall') {
+        ///
+        acceptDeclineGroupVoiceCall(
+          context,
+          message.data['name'].toString(),
+          message.data['channelName'].toString(),
+        );
+
+        ///
       }
     });
   }
@@ -360,6 +309,90 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: textWithBoldStyle(
                       //
                       'Incoming Video Call From $call_from',
+                      //
+                      Colors.black,
+                      16.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      //
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ZegoVideoScreen(
+                            userIdIs: strLoginFirebaseId.toString(),
+                            channelName: channel_name.toString(),
+                            userName: strLoginUserId.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.transparent,
+                      child: Center(
+                        child: textWithBoldStyle(
+                          'Accept',
+                          Colors.green,
+                          16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.transparent,
+                    child: Center(
+                      child: textWithBoldStyle(
+                        'Decline',
+                        Colors.redAccent,
+                        14.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+//
+  void acceptDeclineGroupVoiceCall(
+    BuildContext context,
+    String call_from,
+    String channel_name,
+  ) async {
+    await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // const SizedBox(height: 8),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: textWithBoldStyle(
+                      //
+                      'Incoming Group Audio Call From $call_from',
                       //
                       Colors.black,
                       16.0,
