@@ -175,6 +175,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (message.data['type'].toString() == 'audioCall') {
         ///
+        print('ME CALL ??? ');
         callAcceptOrDecline(
           context,
           message.data['name'].toString(),
@@ -199,7 +200,7 @@ class _SplashScreenState extends State<SplashScreen> {
           message.data['channelName'].toString(),
         );
 
-        /// acceptDeclineGroupVideoCall
+        ///
       } else if (message.data['type'].toString() == 'groupVideoCall') {
         ///
         acceptDeclineGroupVideoCall(
@@ -208,6 +209,7 @@ class _SplashScreenState extends State<SplashScreen> {
           message.data['channelName'].toString(),
         );
 
+        ///
         ///
       }
     });
@@ -630,22 +632,13 @@ class _SplashScreenState extends State<SplashScreen> {
         print(remoteMessage.data);
       }
 
-      if (remoteMessage.data['type'].toString() == 'audioCall') {
+      /*if (remoteMessage.data['type'].toString() == 'audioCall') {
         //
         callAcceptOrDecline(
           context,
           remoteMessage.data['name'].toString(),
           remoteMessage.data['channelName'].toString(),
         );
-        /*Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewAudioGetCallScreen(
-              getFullDetailsOfThatDialog: remoteMessage.data,
-              callStatus: 'get_call',
-            ),
-          ),
-        );*/
       } else if (remoteMessage.data['type'].toString() == 'videoCall') {
         //
         Navigator.push(
@@ -657,6 +650,51 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
         );
+      }*/
+      if (remoteMessage.notification != null) {
+        if (kDebugMode) {
+          print('Message data: ${remoteMessage.data}');
+          print('${remoteMessage.data['userId']}');
+        }
+      }
+
+      if (remoteMessage.data['type'].toString() == 'audioCall') {
+        ///
+        callAcceptOrDecline(
+          context,
+          remoteMessage.data['name'].toString(),
+          remoteMessage.data['channelName'].toString(),
+        );
+
+        ///
+      } else if (remoteMessage.data['type'].toString() == 'videoCall') {
+        ///
+        callAcceptOrDeclineVideoCall(
+          context,
+          remoteMessage.data['name'].toString(),
+          remoteMessage.data['channelName'].toString(),
+        );
+
+        ///
+      } else if (remoteMessage.data['type'].toString() == 'groupAudioCall') {
+        ///
+        acceptDeclineGroupVoiceCall(
+          context,
+          remoteMessage.data['name'].toString(),
+          remoteMessage.data['channelName'].toString(),
+        );
+
+        ///
+      } else if (remoteMessage.data['type'].toString() == 'groupVideoCall') {
+        ///
+        acceptDeclineGroupVideoCall(
+          context,
+          remoteMessage.data['name'].toString(),
+          remoteMessage.data['channelName'].toString(),
+        );
+
+        ///
+        ///
       }
     });
   }

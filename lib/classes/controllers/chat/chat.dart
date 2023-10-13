@@ -608,7 +608,7 @@ class _ChatScreenState extends State<ChatScreen> {
       } else {
         for (var element in value.docs) {
           if (kDebugMode) {
-            print('======> YES,  USER FOUND');
+            print('======> YES,  USER FOUND 2.0');
             print(element.data());
             print(element.data()['firebaseId'].toString());
             print(element.data()['device'].toString());
