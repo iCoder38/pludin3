@@ -42,6 +42,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   //
+  // check only one file to push
   File? imageFile;
   var str_image_processing = '0';
   //
@@ -79,6 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
     //
     if (kDebugMode) {
       print(widget.chatDialogData);
+      print('push only one file ');
     }
 
     funcGetLocalDBdata();
