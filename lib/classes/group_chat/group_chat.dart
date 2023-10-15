@@ -73,6 +73,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       print(widget.chatDialogData);
       print('**************** MATCH ***************************');
       print(widget.chatDialogData['match']);
+      print
       print('*******************************************************');
     }
     super.initState();
