@@ -88,6 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (widget.strFromDialog == 'yes') {
       //
       print('yes from dialog');
+      print('yes from dialog 2');
       if (FirebaseAuth.instance.currentUser!.uid ==
           widget.chatDialogData['sender_firebase_id'].toString()) {
         //
